@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+<herd>java</herd>
+<maintainer>
+<email>adam.b.feldman at gmail.com</email>
+<name>Adam Feldman</name>
+</maintainer>
+<longdescription lang="en">
+MagicLauncher is a launcher for Minecraft that gives the user control over Minecraft versioning, allows for easy loading and unloading of modules, and allows for simple java VM parameter editing.
+</longdescription>
+</pkgmetadata>
