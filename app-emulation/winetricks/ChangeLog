@@ -1,12 +1,79 @@
 # ChangeLog for app-emulation/winetricks
 # Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo-x86/app-emulation/winetricks/ChangeLog,v 1.14 2013/01/06 02:58:24 tetromino Exp $
+# $Header: /var/cvsroot/gentoo-x86/app-emulation/winetricks/ChangeLog,v 1.26 2013/07/13 03:17:38 tetromino Exp $
 
-*winetricks-931-r1 (13 Jan 2013)
+*winetricks-20130707 (13 Jul 2013)
 
-  13 Jan 2013; NP-Hardass <np.hardass@gmail.com>
-  -winetricks-931.ebuild, +winetricks-931-r1.ebuild:
-  Add Mate support.
+  13 Jul 2013; Alexandre Rostovtsev <tetromino@gentoo.org>
+  -winetricks-960.ebuild, +winetricks-20130707.ebuild:
+  Version bump with fixes for CJK fonts, wmp10, vcrun2005. Drop old.
+
+  09 Jul 2013; Alexandre Rostovtsev <tetromino@gentoo.org>
+  winetricks-20130629.ebuild, winetricks-99999999.ebuild, metadata.xml:
+  Make unrar dependency optional (bug #476254, thanks to Ulrich Müller).
+
+  09 Jul 2013; Alexandre Rostovtsev <tetromino@gentoo.org>
+  winetricks-20130629.ebuild, winetricks-99999999.ebuild:
+  Restrict tests (they require network access and try to start wine) and add
+  missing dependencies (bug #475918, thanks to Markus Oehme).
+
+*winetricks-20130629 (30 Jun 2013)
+
+  30 Jun 2013; Alexandre Rostovtsev <tetromino@gentoo.org>
+  -winetricks-954.ebuild, +winetricks-20130629.ebuild,
+  winetricks-99999999.ebuild:
+  Version bump with updates for Adobe Flash, .NET, psdk2003, etc. Switch to
+  upstream packaged tarballs instead of svn checkouts. Drop old.
+
+*winetricks-960 (15 Jun 2013)
+
+  15 Jun 2013; Alexandre Rostovtsev <tetromino@gentoo.org>
+  -winetricks-952.ebuild, +winetricks-960.ebuild, winetricks-99999999.ebuild:
+  Version bump with Adobe Flash updates and wine-1.6 compatibility. Remove old.
+
+*winetricks-954 (26 May 2013)
+
+  26 May 2013; Alexandre Rostovtsev <tetromino@gentoo.org>
+  -winetricks-949.ebuild, +winetricks-954.ebuild:
+  Version bump, remove old.
+
+*winetricks-952 (13 May 2013)
+
+  13 May 2013; Alexandre Rostovtsev <tetromino@gentoo.org>
+  -winetricks-947.ebuild, +winetricks-952.ebuild:
+  Version bump, fixes .NET 1.1 download. Remove old.
+
+*winetricks-949 (28 Apr 2013)
+
+  28 Apr 2013; Alexandre Rostovtsev <tetromino@gentoo.org>
+  -winetricks-941.ebuild, +winetricks-949.ebuild:
+  Version bump; drop old.
+
+*winetricks-947 (31 Mar 2013)
+
+  31 Mar 2013; Alexandre Rostovtsev <tetromino@gentoo.org>
+  -winetricks-939.ebuild, +winetricks-947.ebuild:
+  Bump with Flash updates and .NET fixes. Drop old.
+
+*winetricks-941 (18 Feb 2013)
+
+  18 Feb 2013; Alexandre Rostovtsev <tetromino@gentoo.org>
+  -winetricks-935.ebuild, +winetricks-941.ebuild:
+  Version bump; drop old.
+
+*winetricks-939 (02 Feb 2013)
+
+  02 Feb 2013; Alexandre Rostovtsev <tetromino@gentoo.org>
+  -winetricks-931.ebuild, +winetricks-939.ebuild:
+  Version bump, drop old.
+
+*winetricks-935 (19 Jan 2013)
+
+  19 Jan 2013; Alexandre Rostovtsev <tetromino@gentoo.org>
+  -winetricks-927.ebuild, winetricks-931.ebuild, +winetricks-935.ebuild,
+  winetricks-99999999.ebuild:
+  Version bump, drop old. Silence QA messages about Wine category in .desktop
+  file (bug #451552, thanks to Ilya Gordeev and Michael Palimaka).
 
 *winetricks-931 (06 Jan 2013)
 
