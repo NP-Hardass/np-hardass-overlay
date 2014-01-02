@@ -1,8 +1,6 @@
-diff --git a/bin/pithos b/bin/pithos
-index 725ad7b..62ddd88 100755
---- a/bin/pithos
-+++ b/bin/pithos
-@@ -206,7 +206,7 @@ class PithosWindow(gtk.Window):
+--- pithos/pithos.py	2013-12-05 09:59:17.000000000 -0500
++++ pithos/pithos.py	2014-01-02 02:10:59.456177003 -0500
+@@ -185,7 +185,7 @@
          bus.connect("message::eos", self.on_gst_eos)
          bus.connect("message::buffering", self.on_gst_buffering)
          bus.connect("message::error", self.on_gst_error)

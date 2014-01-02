@@ -1,0 +1,15 @@
+--- pithos/pithosconfig.py	2013-12-05 09:59:17.000000000 -0500
++++ pithos/pithosconfig.py	2014-01-02 02:12:43.802172351 -0500
+@@ -16,7 +16,11 @@
+ 
+ # where your project will head for your data (for instance, images and ui files)
+ # by default, this is data, relative your trunk layout
+-__pithos_data_directory__ = 'data/'
++#__pithos_data_directory__ = 'data/'
++from os.path import isdir, normpath, join
++__pithos_data_directory__ = (normpath(join(__file__, 'data/'))
++			     if isdir(join(__file__, 'data/'))
++                             else '/usr/share/pithos')
+ __license__ = 'GPL-3'
+ 
+ VERSION = '0.3.18'

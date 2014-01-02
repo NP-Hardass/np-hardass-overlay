@@ -11,9 +11,8 @@ if [[ ${PV} == 99999999 ]]; then
 	EGIT_REPO_URI="git://github.com/kevinmehall/pithos.git
 					https://github.com/kevinmehall/pithos.git"
 else
-	MY_PV="6c9a9ff1660bb8c35b846cb5763f8a131228b6d4"
 	SRC_URI="https://github.com/${PN}/${PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"	
-	S="${WORKDIR}/${PN}-${MY_PV}"
+	S="${WORKDIR}/${P}"
 fi
 
 DESCRIPTION="A Pandora Radio (pandora.com) player for the GNOME Desktop"
@@ -33,18 +32,16 @@ RDEPEND="dev-python/pyxdg[${PYTHON_USEDEP}]
 	dev-python/gst-python[${PYTHON_USEDEP}]
 	dev-python/dbus-python[${PYTHON_USEDEP}]
 	dev-python/pylast[${PYTHON_USEDEP}]
-	media-plugins/gst-plugins-meta[aac,http,mp3]
+	media-plugins/gst-plugins-meta:0.10[aac,http,mp3]
 	gnome? ( gnome-base/gnome-settings-daemon )
 	!gnome? ( dev-libs/keybinder[python] )"
 
-PATCHES=(
-	"${FILESDIR}"/${P}-detect-datadir.patch
-	"${FILESDIR}"/${P}-dont-notify-volume.patch
-)
-
 src_prepare() {
+	epatch "${FILESDIR}/${P}-detect-datadir.patch"
+	epatch "${FILESDIR}/${P}-dont-notify-volume.patch"
+	
 	# replace the build system with something more sane
-	cp "${FILESDIR}"/setup.py "${WORKDIR}"
+	cp "${FILESDIR}"/setup.py "${S}"
 
 	distutils-r1_src_prepare
 }
