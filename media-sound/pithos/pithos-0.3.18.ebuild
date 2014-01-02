@@ -33,7 +33,7 @@ RDEPEND="dev-python/pyxdg[${PYTHON_USEDEP}]
 	dev-python/gst-python[${PYTHON_USEDEP}]
 	dev-python/dbus-python[${PYTHON_USEDEP}]
 	dev-python/pylast[${PYTHON_USEDEP}]
-	media-plugins/gst-plugins-meta:0.10[aac,http,mp3]
+	media-plugins/gst-plugins-meta[aac,http,mp3]
 	gnome? ( gnome-base/gnome-settings-daemon )
 	!gnome? ( dev-libs/keybinder[python] )"
 
