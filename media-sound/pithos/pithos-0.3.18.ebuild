@@ -44,7 +44,7 @@ PATCHES=(
 
 src_prepare() {
 	# replace the build system with something more sane
-	cp "${FILESDIR}"/setup.py "${S}"
+	cp "${FILESDIR}"/setup.py "${WORKDIR}"
 
 	distutils-r1_src_prepare
 }
