@@ -15,7 +15,7 @@ icondir = 'data/icons'
 bindir = 'bin'
 
 datafiles = [[(join(DATA_DIR, root.partition(datadir)[2].lstrip('/')), [join(root, f) for f in files])
-             for root, dirs, files in walk(join(datadir, data))][0] for data in datadirs]
+             for root, dirs, files in walk(join(datadir, data))] for data in datadirs]
 
 datafiles += ([(join(ICON_DIR, root.partition(icondir)[2].lstrip('/')), [join(root, f) for f in files])
                for root, dirs, files in walk(icondir)])
