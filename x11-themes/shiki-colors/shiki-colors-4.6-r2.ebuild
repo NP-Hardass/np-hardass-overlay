@@ -15,7 +15,7 @@ SLOT="0"
 KEYWORDS="amd64 x86"
 IUSE=""
 
-RDEPEND="|| ( x11-wm/metacity xfce-base/xfwm4 x11-wm/mate-window-manager )
+RDEPEND="|| ( x11-wm/metacity xfce-base/xfwm4 x11-wm/mate-window-manager x11-wm/marco )
 	x11-themes/gtk-engines:2"
 DEPEND=""
 RESTRICT="binchecks strip"
