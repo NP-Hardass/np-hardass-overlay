@@ -1,6 +1,6 @@
-# Copyright 1999-2011 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/sys-libs/glibc/files/eblits/pkg_setup.eblit,v 1.10 2011/12/14 16:42:46 vapier Exp $
+# $Header: /var/cvsroot/gentoo-x86/sys-libs/glibc/files/eblits/pkg_setup.eblit,v 1.12 2014/06/14 22:19:10 vapier Exp $
 
 glibc_compile_test() {
 	local ret save_cflags=${CFLAGS}
@@ -48,7 +48,10 @@ glibc_run_test() {
 eblit-glibc-pkg_setup() {
 	# prevent native builds from downgrading ... maybe update to allow people
 	# to change between diff -r versions ? (2.3.6-r4 -> 2.3.6-r2)
-	if [[ ${ROOT} == "/" ]] && [[ ${CBUILD} == ${CHOST} ]] && [[ ${CHOST} == ${CTARGET} ]] ; then
+	if [[ ${MERGE_TYPE} != "buildonly" ]] && \
+	   [[ ${ROOT} == "/" ]] && \
+	   [[ ${CBUILD} == ${CHOST} ]] && \
+	   [[ ${CHOST} == ${CTARGET} ]] ; then
 		if has_version '>'${CATEGORY}/${PF} ; then
 			eerror "Sanity check to keep you from breaking your system:"
 			eerror " Downgrading glibc is not supported and a sure way to destruction"
@@ -74,9 +77,9 @@ eblit-glibc-pkg_setup() {
 	fi
 
 	# users have had a chance to phase themselves, time to give em the boot
-	if [[ -e ${ROOT}/etc/locale.gen ]] && [[ -e ${ROOT}/etc/locales.build ]] ; then
-		eerror "You still haven't deleted ${ROOT}/etc/locales.build."
-		eerror "Do so now after making sure ${ROOT}/etc/locale.gen is kosher."
+	if [[ -e ${EROOT}/etc/locale.gen ]] && [[ -e ${EROOT}/etc/locales.build ]] ; then
+		eerror "You still haven't deleted ${EROOT}/etc/locales.build."
+		eerror "Do so now after making sure ${EROOT}/etc/locale.gen is kosher."
 		die "lazy upgrader detected"
 	fi
 
@@ -98,18 +101,18 @@ eblit-glibc-pkg_setup() {
 
 	# Make sure host system is up to date #394453
 	if has_version '<sys-libs/glibc-2.13' && \
-	   [[ -n $(scanelf -qys__guard -F'#s%F' "${ROOT}"/lib*/l*-*.so) ]]
+	   [[ -n $(scanelf -qys__guard -F'#s%F' "${EROOT}"/lib*/l*-*.so) ]]
 	then
 		ebegin "Scanning system for __guard to see if you need to rebuild first ..."
 		local files=$(
 			scanelf -qys__guard -F'#s%F' \
-				"${ROOT}"/*bin/ \
-				"${ROOT}"/lib* \
-				"${ROOT}"/usr/*bin/ \
-				"${ROOT}"/usr/lib* | \
+				"${EROOT}"/*bin/ \
+				"${EROOT}"/lib* \
+				"${EROOT}"/usr/*bin/ \
+				"${EROOT}"/usr/lib* | \
 				egrep -v \
-					-e "^${ROOT}/lib.*/(libc|ld)-2.*.so$" \
-					-e "^${ROOT}/sbin/(ldconfig|sln)$"
+					-e "^${EROOT}/lib.*/(libc|ld)-2.*.so$" \
+					-e "^${EROOT}/sbin/(ldconfig|sln)$"
 		)
 		[[ -z ${files} ]]
 		if ! eend $? ; then

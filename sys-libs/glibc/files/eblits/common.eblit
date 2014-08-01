@@ -1,10 +1,13 @@
-# Copyright 1999-2012 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/sys-libs/glibc/files/eblits/common.eblit,v 1.28 2012/08/10 19:44:47 vapier Exp $
+# $Header: /var/cvsroot/gentoo-x86/sys-libs/glibc/files/eblits/common.eblit,v 1.35 2014/06/14 08:07:10 rhill Exp $
 
 alt_prefix() {
 	is_crosscompile && echo /usr/${CTARGET}
 }
+
+: ${ED:=${D}}
+: ${EROOT:=${ROOT}}
 
 # We need to be able to set alternative headers for
 # compiling for non-native platform
@@ -153,6 +156,9 @@ setup_flags() {
 	strip-unsupported-flags
 	filter-flags -m32 -m64 -mabi=*
 
+	# Bug 492892.
+	filter-flags -frecord-gcc-switches
+
 	unset CBUILD_OPT CTARGET_OPT
 	if has_multilib_profile ; then
 		CTARGET_OPT=$(get_abi_CTARGET)
@@ -177,7 +183,12 @@ setup_flags() {
 	# building glibc with SSP is fraught with difficulty, especially
 	# due to __stack_chk_fail_local which would mean significant changes
 	# to the glibc build process. See bug #94325 #293721
-	use hardened && gcc-specs-ssp && append-cflags $(test-flags-CC -fno-stack-protector)
+	# Note we have to handle both user-given CFLAGS and gcc defaults via
+	# spec rules here.  We can't simply add -fno-stack-protector as it gets
+	# added before user flags, and we can't just filter-flags because
+	# _filter_hardened doesn't support globs.
+	filter-flags -fstack-protector*
+	gcc-specs-ssp && append-flags $(test-flags -fno-stack-protector)
 
 	if use hardened && gcc-specs-pie ; then
 		# Force PIC macro definition for all compilations since they're all
@@ -246,9 +257,14 @@ use_multiarch() {
 	local bver nver
 	bver=$($(tc-getLD ${CTARGET}) -v | sed -n -r '1{s:[^0-9]*::;s:^([0-9.]*).*:\1:;p}')
 	case $(tc-arch ${CTARGET}) in
-		amd64|x86) nver="2.20" ;;
-		sparc)     nver="2.21" ;;
-		*)         return 1 ;;
+	amd64|x86) nver="2.20" ;;
+	arm)       nver="2.22" ;;
+	hppa)      nver="2.23" ;;
+	ppc|ppc64) nver="2.20" ;;
+	# ifunc was added in 2.23, but glibc also needs machinemode which is in 2.24.
+	s390)      nver="2.24" ;;
+	sparc)     nver="2.21" ;;
+	*)         return 1 ;;
 	esac
 	version_is_at_least ${nver} ${bver}
 }
@@ -288,4 +304,12 @@ setup_env() {
 
 just_headers() {
 	is_crosscompile && use crosscompile_opts_headers-only
+}
+
+glibc_banner() {
+	local b="Gentoo ${PVR}"
+	[[ -n ${SNAP_VER} ]] && b+=" snapshot ${SNAP_VER}"
+	[[ -n ${BRANCH_UPDATE} ]] && b+=" branch ${BRANCH_UPDATE}"
+	[[ -n ${PATCH_VER} ]] && ! use vanilla && b+=" p${PATCH_VER}"
+	echo "${b}"
 }
