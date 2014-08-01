@@ -1,0 +1,17 @@
+[Unit] 
+Description=OpenAFS Client Service 
+After=network.target remote-fs.target nss-lookup.target
+
+[Service] 
+Type=oneshot
+EnvironmentFile=/etc/conf.d/openafs-client
+ExecStartPre=/sbin/modprobe libafs
+ExecStart=/usr/sbin/afsd $OPTIONS
+ExecStop=/bin/umount /afs 
+ExecStopPost=/usr/sbin/afsd -shutdown 
+ExecStopPost=/sbin/rmmod libafs
+KillMode=none 
+RemainAfterExit=yes
+
+[Install] 
+WantedBy=multi-user.target remote-fs.target
