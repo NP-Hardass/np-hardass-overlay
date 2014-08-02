@@ -22,7 +22,7 @@ KEYWORDS="~amd64 ~sparc ~x86 ~amd64-fbsd ~x86-fbsd ~amd64-linux ~x86-linux"
 
 IUSE="doc kerberos pam"
 
-RDEPEND="|| ( ~net-fs/openafs-kernel-${PV} !net-fs/openafs-kernel )
+RDEPEND="~net-fs/openafs-kernel-${PV}
 	sys-libs/ncurses
 	pam? ( sys-libs/pam )
 	kerberos? ( virtual/krb5 )"
