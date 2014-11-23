@@ -32,6 +32,7 @@ RDEPEND=">=dev-libs/glib-2.12:2
 	>=gnome-base/libglade-2:2.0
 	>=gnome-base/libgnomecanvas-2
 	>=gnome-base/librsvg-1.1.1:2
+	<gnome-base/gsettings-desktop-schemas-3.10
 	>=dev-libs/libxml2-2.4.12:2
 	>=media-libs/libart_lgpl-2.3.11
 	x11-libs/gksu
