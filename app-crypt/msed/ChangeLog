@@ -2,6 +2,16 @@
 # Copyright 1999-2014 Gentoo Foundation; Distributed under the GPL v2
 # $Header: $
 
+*msed-0.10-r1 (11 Dec 2014)
+*msed-0.03-r1 (11 Dec 2014)
+*msed-0.02-r1 (11 Dec 2014)
+*msed-0.01-r1 (11 Dec 2014)
+
+  11 Dec 2014; <np.hardass@gmail.com> +msed-0.01-r1.ebuild, +msed-0.02-r1.ebuild,
+  +msed-0.03-r1.ebuild, +msed-0.10-r1.ebuild, msed-9999.ebuild,
+  +files/64bit-compat.patch:
+  Patch for ebuilds enabling 64 bit support
+
 *msed-9999 (11 Dec 2014)
 *msed-0.11 (11 Dec 2014)
 *msed-0.10 (11 Dec 2014)

@@ -11,8 +11,8 @@ if [[ ${PV} == 9999 ]]; then
 					git://github.com/NP-Hardass/msed.git
 					https://github.com/NP-Hardass/msed.git"
 else
-	SRC_URI="https://github.com/r0m30/${PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"	
-	S="${WORKDIR}/${P}"
+	SRC_URI="https://github.com/r0m30/${PN}/archive/${PV}alpha.tar.gz -> ${P}.tar.gz"	
+	S="${WORKDIR}/${P}alpha"
 fi
 
 DESCRIPTION="Managing Self Encrypting Drives
