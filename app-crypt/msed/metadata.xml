@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer>
+		<email>np.hardass@gmail.com</email>
+		<name>NP-Hardass</name>
+	</maintainer>
+	<longdescription>
+		Managing Self Encrypting Drives - An open source SED management
+		program and Pre-Boot Authorization image to comply with
+		Trusted Computing Group's Opal 2.0 SSC.
+	</longdescription>
+</pkgmetadata>
