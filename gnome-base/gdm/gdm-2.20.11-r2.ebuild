@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/gnome-base/gdm/gdm-2.20.11-r1.ebuild,v 1.12 2014/01/03 20:13:17 tetromino Exp $
 
-EAPI="4"
+EAPI="5"
 GCONF_DEBUG="no"
 GNOME2_LA_PUNT="yes"
 GNOME_TARBALL_SUFFIX="bz2"
@@ -14,10 +14,11 @@ HOMEPAGE="https://live.gnome.org/GDM"
 
 LICENSE="GPL-2+"
 SLOT="0"
-KEYWORDS="alpha amd64 arm ia64 ppc ppc64 sh sparc x86 ~x86-fbsd"
+KEYWORDS="~amd64 ~x86"
 
 IUSE_LIBC="elibc_glibc"
-IUSE="accessibility afs branding +consolekit dmx ipv6 gnome-keyring pam remote selinux tcpd xinerama $IUSE_LIBC"
+IUSE="accessibility afs branding +consolekit dmx ipv6 gnome-keyring pam selinux tcpd xinerama $IUSE_LIBC"
+#IUSE="remote"
 
 # Name of the tarball with gentoo specific files
 GDM_EXTRA="${PN}-2.20.9-gentoo-files-r1"
@@ -52,10 +53,11 @@ RDEPEND=">=dev-libs/glib-2.12:2
 	gnome-keyring? ( >=gnome-base/gnome-keyring-2.22[pam] )
 	pam? ( virtual/pam )
 	!pam? ( elibc_glibc? ( sys-apps/shadow ) )
-	remote? ( gnome-extra/zenity )
 	selinux? ( sys-libs/libselinux )
 	tcpd? ( >=sys-apps/tcp-wrappers-7.6 )
 	>=x11-misc/xdg-utils-1.0.2-r3"
+#	remote? ( gnome-extra/zenity )
+
 DEPEND="${RDEPEND}
 	dmx? ( x11-proto/dmxproto )
 	xinerama? ( x11-proto/xineramaproto )
