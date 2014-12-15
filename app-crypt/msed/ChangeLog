@@ -2,6 +2,9 @@
 # Copyright 1999-2014 Gentoo Foundation; Distributed under the GPL v2
 # $Header: $
 
+  15 Dec 2014; <np.hardass@gmail.com> msed-9999.ebuild:
+  Updated live ebuild to take advantage of new upstream build targets
+
   11 Dec 2014; <np.hardass@gmail.com> -msed-0.01.ebuild, -msed-0.02.ebuild,
   -msed-0.03.ebuild, -msed-0.10.ebuild:
   Remove older ebuilds that didn't support 64 bit.
