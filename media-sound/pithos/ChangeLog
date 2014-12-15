@@ -1,6 +1,14 @@
 # ChangeLog for media-sound/pithos
-# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
+# Copyright 1999-2014 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/media-sound/pithos/ChangeLog,v 1.4 2013/08/09 00:27:32 chutzpah Exp $
+
+*pithos-0.3.17-r3 (15 Dec 2014)
+
+  15 Dec 2014; <np.hardass@gmail.com> -pithos-0.3.17-r2.ebuild,
+  +pithos-0.3.17-r3.ebuild, -pithos-0.3.18.ebuild,
+  -files/pithos-0.3.18-detect-datadir.patch,
+  -files/pithos-0.3.18-dont-notify-volume.patch:
+  QA fixes, and remove 0.3.18 to maintain only one version
 
 *pithos-0.3.18
   02 Jan 2014; NP-Hardass <NP.Hardass@gmail.com> pithos-0.3.18.build:

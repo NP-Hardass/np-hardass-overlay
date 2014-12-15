@@ -1,21 +1,13 @@
-# Copyright 1999-2013 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-EAPI="4"
-PYTHON_DEPEND="2:2.6"
-SUPPORT_PYTHON_ABIS="1"
+EAPI="5"
+PYTHON_COMPAT=(python2_{6,7})
+inherit eutils distutils-r1
 
-if [[ ${PV} = 9999 ]]; then
-	LIVE_ECLASS="bzr"
-	EBZR_REPO_URI="lp:${PN}"
-else
-	SRC_URI="mirror://sabayon/${CATEGORY}/${PN}/${P}.tar.gz"
-	KEYWORDS="~amd64 ~x86"
-fi
-
-inherit eutils ${LIVE_ECLASS} distutils
-unset LIVE_ECLASS
+SRC_URI="mirror://sabayon/${CATEGORY}/${PN}/${P}.tar.gz"
+KEYWORDS="~amd64 ~x86"
 
 DESCRIPTION="A Pandora Radio (pandora.com) player for the GNOME Desktop"
 HOMEPAGE="http://kevinmehall.net/p/pithos/"
@@ -40,14 +32,14 @@ RDEPEND="dev-python/pyxdg
 		dev-libs/keybinder )
 "
 
-RESTRICT_PYTHON_ABIS="2.[45] 3.*"
+#RESTRICT_PYTHON_ABIS="2.[45] 3.*"
 DISTUTILS_USE_SEPARATE_SOURCE_DIRECTORIES="1"
 
 src_prepare() {
 	# hacky way to build when DISPLAY not set
 	# https://bugs.launchpad.net/pithos/+bug/778522
 	epatch "${FILESDIR}"/${P}-fix-build.patch
-	distutils_src_prepare
+	distutils-r1_src_prepare
 
 	# bug #216009
 	# avoid writing to /root/.gstreamer-0.10/registry.xml
@@ -55,7 +47,7 @@ src_prepare() {
 }
 
 src_install() {
-	distutils_src_install
+	distutils-r1_src_install
 
 	dosym  ../icons/hicolor/scalable/apps/${PN}.svg \
 		/usr/share/pixmaps/${PN}.svg || die "dosym failed"
