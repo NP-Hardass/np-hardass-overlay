@@ -1,10 +1,14 @@
-EAPI=4
+# Copyright 1999-2014 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+# $Header: $
+
+EAPI=5
 
 inherit eutils
 
 DESCRIPTION="Dell laptop fan regulator for Linux/Solaris."
 HOMEPAGE="http://dellfand.dinglisch.net/"
-SRC_URI="https://github.com/downloads/slashbeast/foo-overlay/$PN-$PV.tar.bz2"
+SRC_URI="mirror://github.com/downloads/slashbeast/foo-overlay/$PN-$PV.tar.bz2"
 
 LICENSE="GPL-2"
 SLOT="0"
@@ -13,7 +17,6 @@ IUSE=""
 
 DEPEND=""
 RDEPEND="${DEPEND}"
-
 
 src_prepare() {
 	epatch "${FILESDIR}/dellfand-include-fix.patch" || die
