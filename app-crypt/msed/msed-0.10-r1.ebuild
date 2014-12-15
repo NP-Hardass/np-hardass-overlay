@@ -1,5 +1,6 @@
 # Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
+# $Header: $
 
 EAPI=5
 inherit eutils
@@ -11,7 +12,7 @@ if [[ ${PV} == 9999 ]]; then
 					git://github.com/NP-Hardass/msed.git
 					https://github.com/NP-Hardass/msed.git"
 else
-	SRC_URI="https://github.com/r0m30/${PN}/archive/${PV}beta.tar.gz -> ${P}.tar.gz"	
+	SRC_URI="https://github.com/r0m30/${PN}/archive/${PV}beta.tar.gz -> ${P}.tar.gz"
 	S="${WORKDIR}/${P}beta"
 fi
 

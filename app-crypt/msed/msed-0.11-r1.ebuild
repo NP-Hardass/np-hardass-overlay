@@ -1,6 +1,6 @@
 # Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/media-sound/pithos/pithos-20130808.ebuild,v 1.1 2013/08/08 21:24:48 chutzpah Exp $
+# $Header: $
 
 EAPI=5
 inherit eutils
@@ -12,7 +12,7 @@ if [[ ${PV} == 9999 ]]; then
 					git://github.com/NP-Hardass/msed.git
 					https://github.com/NP-Hardass/msed.git"
 else
-	SRC_URI="https://github.com/r0m30/${PN}/archive/${PV}beta.tar.gz -> ${P}.tar.gz"	
+	SRC_URI="https://github.com/r0m30/${PN}/archive/${PV}beta.tar.gz -> ${P}.tar.gz"
 	S="${WORKDIR}/${P}beta"
 fi
 
@@ -22,7 +22,7 @@ HOMEPAGE="http://www.r0m30.com/msed/"
 
 LICENSE="GPL-3"
 SLOT="0"
-KEYWORDS="~x86"
+KEYWORDS="~x86 ~amd64"
 IUSE="debug"
 
 DEPEND="dev-libs/crypto++"
@@ -30,6 +30,7 @@ DEPEND="dev-libs/crypto++"
 RDEPEND="${DEPEND}"
 
 src_prepare() {
+	epatch "${FILESDIR}/64bit-compat.patch" || die
 	if ! use debug ; then
 		sed -i "s/DEFAULTCONF=Debug/DEFAULTCONF=Release/" nbproject/Makefile-impl.mk || die
 	fi
