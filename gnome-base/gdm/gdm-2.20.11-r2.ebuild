@@ -80,13 +80,13 @@ pkg_setup() {
 		--disable-static
 		SOUND_PROGRAM=/usr/bin/gdmplay
 		$(use_enable ipv6)
-		$(use_enable remote secureremote)
 		$(use_with accessibility xevie)
 		$(use_with consolekit console-kit)
 		$(use_with dmx)
 		$(use_with selinux)
 		$(use_with tcpd tcp-wrappers)
 		$(use_with xinerama)"
+#		$(use_enable remote secureremote)
 
 	if use pam; then
 		G2CONF="${G2CONF} --enable-authentication-scheme=pam"
