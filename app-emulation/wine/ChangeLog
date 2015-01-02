@@ -2,6 +2,11 @@
 # Copyright 1999-2015 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/app-emulation/wine/ChangeLog,v 1.524 2014/12/16 15:06:28 pacho Exp $
 
+*wine-1.7.33-r1 (02 Jan 2015)
+
+  02 Jan 2015; <np.hardass@gmail.com> +wine-1.7.33-r1.ebuild:
+  refactor COMPHOLIO_P to STAGING_P
+
 *wine-1.7.33 (02 Jan 2015)
 
   02 Jan 2015; <np.hardass@gmail.com> +wine-1.7.33.ebuild,
