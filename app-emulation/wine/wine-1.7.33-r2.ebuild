@@ -195,13 +195,13 @@ COMMON_DEPEND="
 				>=media-libs/mesa-9.1.6[osmesa,abi_x86_32(-)]
 			) )
 			pcap? ( net-libs/libpcap[abi_x86_32(-)] )
-			pipelight? ( || (
-				app-emulation/emul-linux-x86-baselibs[development,-abi_x86_32(-)]
-				>=sys-apps/attr-2.4.47-r1[abi_x86_32(-)]
-			) )
 			pulseaudio? ( || (
 				app-emulation/emul-linux-x86-soundlibs[development,-abi_x86_32(-)]
 				>=media-sound/pulseaudio-5.0[abi_x86_32(-)]
+			) )
+			staging? ( || (
+				app-emulation/emul-linux-x86-baselibs[development,-abi_x86_32(-)]
+				>=sys-apps/attr-2.4.47-r1[abi_x86_32(-)]
 			) )
 			xml? ( || (
 				>=app-emulation/emul-linux-x86-baselibs-20131008[development,-abi_x86_32(-)]
@@ -294,7 +294,7 @@ src_unpack() {
 		unpack ${MY_P}.tar.bz2
 	fi
 
-	use pipelight || use pulseaudio && unpack "${STAGING_P}.tar.gz"
+	use staging || use pulseaudio && unpack "${STAGING_P}.tar.gz"
 
 	unpack "${WINE_GENTOO}.tar.bz2"
 
@@ -408,7 +408,7 @@ multilib_src_configure() {
 	)
 
 	use pulseaudio && myconf+=( --with-pulse )
-	use pipelight && myconf+=( --with-xattr )
+	use staging && myconf+=( --with-xattr )
 
 	local PKG_CONFIG AR RANLIB
 	# Avoid crossdev's i686-pc-linux-gnu-pkg-config if building wine32 on amd64; #472038
