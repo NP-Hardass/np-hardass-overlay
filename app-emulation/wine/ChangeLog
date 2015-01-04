@@ -2,6 +2,9 @@
 # Copyright 1999-2015 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/app-emulation/wine/ChangeLog,v 1.524 2014/12/16 15:06:28 pacho Exp $
 
+  04 Jan 2015; <np.hardass@gmail.com> wine-9999.ebuild:
+  Updated git clone to git-r3_src_fetch for wine staging as suggested by eroen.
+
 *wine-9999 (03 Jan 2015)
 
   03 Jan 2015; <np.hardass@gmail.com> +wine-9999.ebuild:

@@ -39,9 +39,6 @@ SRC_URI="${SRC_URI}
 
 if [[ ${PV} == "9999" ]] ; then
 	use staging || use pulseaudio && MY_GIT_SRC_URI="git://github.com/wine-compholio/wine-staging.git"
-	#SRC_URI="${SRC_URI}
-	#staging? ( https://github.com/wine-compholio/wine-staging/archive/master.tar.gz -> ${STAGING_P}.tar.gz )
-	#pulseaudio? ( https://github.com/wine-compholio/wine-staging/archive/master.tar.gz -> ${STAGING_P}.tar.gz )"
 else
 	SRC_URI="${SRC_URI}
 	staging? ( https://github.com/wine-compholio/wine-staging/archive/v${PV}.tar.gz -> ${STAGING_P}.tar.gz )
@@ -300,9 +297,12 @@ pkg_setup() {
 src_unpack() {
 	if [[ ${PV} == "9999" ]] ; then
 		git-r3_src_unpack
-		use staging || use pulseaudio && \
-			git clone -b master "${MY_GIT_SRC_URI}" "${WORKDIR}/${STAGING_P}" || \
+		if use staging || use pulseaudio; then
+			EGIT_REPO_URI=${MY_GIT_SRC_URI}
+			unset ${PN}_LIVE_REPO;
+			EGIT_CHECKOUT_DIR=${WORKDIR}/${STAGING_P} git-r3_src_unpack || \
 			eerror "Failed to clone Wine-Staging repository."
+		fi
 	else
 		unpack ${MY_P}.tar.bz2
 		use staging || use pulseaudio && unpack "${STAGING_P}.tar.gz"
