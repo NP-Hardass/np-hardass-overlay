@@ -347,7 +347,7 @@ src_prepare() {
 		    "${WORKDIR}/${STAGING_P}/patches/series") )
 
 		# epatch doesn't support binary patches
-		ebegin "Applying Compholio font patches"
+		ebegin "Applying Wine-Staging font patches"
 		for f in "${WORKDIR}/${STAGING_P}/patches/fonts-Missing_Fonts"/*.patch; do
 			"../${STAGING_P}/debian/tools/gitapply.sh" < "${f}" \
 			    || die "Failed to apply ${f}"
