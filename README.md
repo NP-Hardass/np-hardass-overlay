@@ -41,8 +41,9 @@ Layman allows for the easy management of overlays.
 If you haven’t used layman yet, just run these commands:
 
 	emerge -av layman
-	echo PORTDIR_OVERLAY=\"\" >> /var/lib/layman/make.conf
+	echo PORTDIR_OVERLAY=\"\" >> /etc/portage//make.conf
 	echo "source /var/lib/layman/make.conf" >> /etc/make.conf
+	layman -f
 
 
 Then you can add this overlay wih:
