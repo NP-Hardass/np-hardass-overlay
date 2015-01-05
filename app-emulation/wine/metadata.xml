@@ -27,6 +27,7 @@ Think of Wine as a compatibility layer for running Windows programs. Wine does n
 		http://wiki.winehq.org/NtlmSigningAndSealing</flag>
 	<flag name='staging'>Apply unofficial Wine-Staging patches for advanced feature support that hasn't made it into upstream Wine yet;
 		use at your own peril</flag>
+	<flag name='txc_dxtn'>Apply unofficial Wine-Staging patches for DXTn encoding/decoding support</flag>
 	<flag name='win32'>Build a 32bit version of Wine (won't run Win64 binaries)</flag>
 	<flag name='win64'>Build a 64bit version of Wine (won't run Win32 binaries)</flag>
 </use>
