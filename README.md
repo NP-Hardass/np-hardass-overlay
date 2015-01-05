@@ -1,6 +1,9 @@
 Welcome to NP-Hardass' Gentoo Overlay!
 ======================================
 
+Packages
+--------
+
 This is a list of packages and any associated notes:
 
 | Package				| Description								| Notes										|
@@ -29,3 +32,27 @@ This is a list of packages and any associated notes:
 | www-plugins/pipelight			| A Windows NSPlugin compatibility program				| Copied from sabayon, version bump						|
 | x11-themes/gdm-themes			| GDM Themes								| Copied from Gentoo, maintain old version: Gnome 2 branch			|
 | x11-themes/shiki-colors		| Shiki-Colors theme for Gnome						| Copied from Gentoo, MATE dependency hacks					|
+
+Installation
+------------
+
+Layman allows for the easy management of overlays.
+
+If you haven’t used layman yet, just run these commands:
+
+	emerge -av layman
+	echo PORTDIR_OVERLAY=\"\" >> /var/lib/layman/make.conf
+	echo "source /var/lib/layman/make.conf" >> /etc/make.conf
+
+
+Then you can add this overlay wih:
+
+	layman -o https://raw.githubusercontent.com/NP-Hardass/np-hardass-overlay/master/overlays.xml -f -a np-hardass-overlay
+
+To sync the overlay via layman:
+
+	layman -s np-hardass-overlay
+
+To delete the overlay:
+
+	layman -d np-hardass-overlay
