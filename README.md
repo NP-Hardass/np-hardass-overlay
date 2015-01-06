@@ -22,7 +22,7 @@ This is a list of packages and any associated notes:
 | net-fs/openafs			| OpenAFS distributed filesystem					| Copied from Gentoo, version bump						|
 | net-fs/openafs-kernel			| OpenAFS kernel module							| Copied from Gentoo, version bump						|
 | net-misc/connman-ui-gtk		| GTK applet for Connman network config tool				| Copied from BGO, live ebuild							|
-| net-misc/gopenvpn			| GTK GUI for OpenVPN							| Currently has a bug, cannot use --quiet-build					|
+| net-misc/gopenvpn			| GTK GUI for OpenVPN							| Currently has a bug, editing configurations in the GUI doesn't work		|
 | net-misc/linuxptp			| Precision Time Protocol application					| Copied from rion								|
 | sys-apps/915resolution		| Utility to patch VBIOS of Intel Chipsets				| Copied from Gentoo								|
 | sys-apps/gnome-disk-utility		| Utility for analyzing disk usage					| Copied from Gentoo, maintain old version: Gnome 2 branch			|

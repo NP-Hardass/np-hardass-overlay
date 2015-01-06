@@ -1,17 +1,18 @@
-# Copyright 1999-2013 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
 EAPI=5
 
 # project is hosted on github.com, so git-2 is needed (git is deprecated)
-inherit git-2 autotools
+inherit git-r3 autotools
 
 DESCRIPTION="gopenvpn is a gtk tray icon for openvpn"
 HOMEPAGE="http://gopenvpn.sourceforge.net/"
 
-EGIT_REPO_URI="git://gopenvpn.git.sourceforge.net/gitroot/gopenvpn/gopenvpn.git"
-#https://github.com/dweeezil/gopenvpn.git
+#EGIT_REPO_URI="git://gopenvpn.git.sourceforge.net/gitroot/gopenvpn/gopenvpn.git"
+EGIT_REPO_URI="git://git.code.sf.net/u/samm2/gopenvpn u-samm2-gopenvpn.git"
+#EGIT_REPO_URI="https://github.com/dweeezil/gopenvpn.git"
 SRC_URI=""
 
 LICENSE="GPL-2"
@@ -23,10 +24,18 @@ RDEPEND="dev-libs/glib:2
 		gnome-base/libglade
 		gnome-base/gnome-keyring
 		sys-auth/polkit"
-PDEPEND="app-editors/gedit"
+#this doesn't seem to be working, so let's just remove the gedit dependency
+#PDEPEND="app-editors/gedit"
 src_prepare(){
-		gettextize
+		#gettextize runs in interactive mode.  This hack forces it to be non-interactive
+		cp $(type -p gettextize) "${T}"/ || die
+		sed -i -e 's:read dummy < /dev/tty::' "${T}/gettextize" || die
+		einfo "Running gettextize -f --no-changelog..."
+		"${T}"/gettextize -f --no-changelog > /dev/null || die "gettexize failed"
+		
 		sed -i '124s/.*/AC_CONFIG_FILES([pixmaps\/Makefile/' configure.ac
-		autoreconf -vif
-		./configure
+		#sed -i '125s/.*/AC_CONFIG_FILES([pixmaps\/Makefile/' configure.ac
+		
+		eautoreconf
+		eautoconf
 }
