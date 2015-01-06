@@ -12,7 +12,8 @@ inherit autotools-utils eutils fdo-mime flag-o-matic gnome2-utils l10n multilib 
 
 if [[ ${PV} == "9999" ]] ; then
 	EGIT_REPO_URI="git://source.winehq.org/git/wine.git"
-	inherit git-2
+	EGIT_BRANCH="master"
+	inherit git-r3
 	SRC_URI=""
 	#KEYWORDS=""
 else
@@ -24,7 +25,7 @@ fi
 
 GV="2.34"
 MV="4.5.4"
-COMPHOLIO_P="wine-staging-${PV}"
+STAGING_P="wine-staging-${PV}"
 WINE_GENTOO="wine-gentoo-2013.06.24"
 DESCRIPTION="Free implementation of Windows(tm) on Unix"
 HOMEPAGE="http://www.winehq.org/"
@@ -34,17 +35,25 @@ SRC_URI="${SRC_URI}
 		abi_x86_64? ( mirror://sourceforge/${PN}/Wine%20Gecko/${GV}/wine_gecko-${GV}-x86_64.msi )
 	)
 	mono? ( mirror://sourceforge/${PN}/Wine%20Mono/${MV}/wine-mono-${MV}.msi )
-	pipelight? ( https://github.com/wine-compholio/wine-staging/archive/v${PV}.tar.gz -> ${COMPHOLIO_P}.tar.gz )
-	pulseaudio? ( https://github.com/wine-compholio/wine-staging/archive/v${PV}.tar.gz -> ${COMPHOLIO_P}.tar.gz )
 	http://dev.gentoo.org/~tetromino/distfiles/${PN}/${WINE_GENTOO}.tar.bz2"
+
+if [[ ${PV} == "9999" ]] ; then
+	use staging || use pulseaudio && MY_GIT_SRC_URI="git://github.com/wine-compholio/wine-staging.git"
+else
+	SRC_URI="${SRC_URI}
+	staging? ( https://github.com/wine-compholio/wine-staging/archive/v${PV}.tar.gz -> ${STAGING_P}.tar.gz )
+	pulseaudio? ( https://github.com/wine-compholio/wine-staging/archive/v${PV}.tar.gz -> ${STAGING_P}.tar.gz )"
+fi
 
 LICENSE="LGPL-2.1"
 SLOT="0"
-IUSE="+abi_x86_32 +abi_x86_64 +alsa capi cups custom-cflags dos elibc_glibc +fontconfig +gecko gphoto2 gsm gstreamer +jpeg lcms ldap +mono mp3 ncurses netapi nls odbc openal opencl +opengl osmesa oss +perl pcap pipelight +png +prelink pulseaudio +realtime +run-exes samba scanner selinux +ssl test +threads +truetype +udisks v4l +X xcomposite xinerama +xml"
+IUSE="+abi_x86_32 +abi_x86_64 +alsa capi cups custom-cflags dos elibc_glibc +fontconfig +gecko gphoto2 gsm gstreamer +jpeg lcms ldap +mono mp3 ncurses netapi nls odbc openal opencl +opengl osmesa oss +perl pcap pipelight +png +prelink pulseaudio +realtime +run-exes s3tc samba scanner selinux +ssl staging test +threads +truetype +udisks v4l +X xcomposite xinerama +xml"
 REQUIRED_USE="|| ( abi_x86_32 abi_x86_64 )
 	test? ( abi_x86_32 )
 	elibc_glibc? ( threads )
 	mono? ( abi_x86_32 )
+	pipelight? ( staging )
+	s3tc? ( staging )
 	osmesa? ( opengl )" #286560
 
 # FIXME: the test suite is unsuitable for us; many tests require net access
@@ -85,7 +94,8 @@ NATIVE_DEPEND="
 	odbc? ( dev-db/unixODBC:= )
 	osmesa? ( media-libs/mesa[osmesa] )
 	pcap? ( net-libs/libpcap )
-	pipelight? ( sys-apps/attr )
+	staging? ( sys-apps/attr )
+	s3tc? ( media-libs/libtxc_dxtn )
 	pulseaudio? ( media-sound/pulseaudio )
 	xml? ( dev-libs/libxml2 dev-libs/libxslt )
 	scanner? ( media-gfx/sane-backends:= )
@@ -194,14 +204,15 @@ COMMON_DEPEND="
 				>=media-libs/mesa-9.1.6[osmesa,abi_x86_32(-)]
 			) )
 			pcap? ( net-libs/libpcap[abi_x86_32(-)] )
-			pipelight? ( || (
-				app-emulation/emul-linux-x86-baselibs[development,-abi_x86_32(-)]
-				>=sys-apps/attr-2.4.47-r1[abi_x86_32(-)]
-			) )
 			pulseaudio? ( || (
 				app-emulation/emul-linux-x86-soundlibs[development,-abi_x86_32(-)]
 				>=media-sound/pulseaudio-5.0[abi_x86_32(-)]
 			) )
+			staging? ( || (
+					app-emulation/emul-linux-x86-baselibs[development,-abi_x86_32(-)]
+					>=sys-apps/attr-2.4.47-r1[abi_x86_32(-)]
+			) )
+			s3tc? ( >=media-libs/libtxc_dxtn-1.0.1-r1[abi_x86_32(-)] )
 			xml? ( || (
 				>=app-emulation/emul-linux-x86-baselibs-20131008[development,-abi_x86_32(-)]
 				(
@@ -288,12 +299,17 @@ pkg_setup() {
 
 src_unpack() {
 	if [[ ${PV} == "9999" ]] ; then
-		git-2_src_unpack
+		git-r3_src_unpack
+		if use staging || use pulseaudio; then
+			EGIT_REPO_URI=${MY_GIT_SRC_URI}
+			unset ${PN}_LIVE_REPO;
+			EGIT_CHECKOUT_DIR=${WORKDIR}/${STAGING_P} git-r3_src_unpack || \
+			eerror "Failed to clone Wine-Staging repository."
+		fi
 	else
 		unpack ${MY_P}.tar.bz2
+		use staging || use pulseaudio && unpack "${STAGING_P}.tar.gz"
 	fi
-
-	use pipelight || use pulseaudio && unpack "${COMPHOLIO_P}.tar.gz"
 
 	unpack "${WINE_GENTOO}.tar.bz2"
 
@@ -309,9 +325,9 @@ src_prepare() {
 		"${FILESDIR}"/${PN}-1.7.12-osmesa-check.patch #429386
 		"${FILESDIR}"/${PN}-1.6-memset-O3.patch #480508
 	)
-	local COMPHOLIO_MAKE_ARGS="-W fonts-Missing_Fonts.ok"
+	local STAGING_MAKE_ARGS="-W fonts-Missing_Fonts.ok"
 
-	use pulseaudio || COMPHOLIO_MAKE_ARGS="${COMPHOLIO_MAKE_ARGS} -W winepulse-PulseAudio_Support.ok"
+	use pipelight || STAGING_MAKE_ARGS="${STAGING_MAKE_ARGS} -W Pipelight.ok"
 	if use gstreamer; then
 		# See http://bugs.winehq.org/show_bug.cgi?id=30557
 		ewarn "Applying experimental patch to fix GStreamer support. Note that"
@@ -319,28 +335,28 @@ src_prepare() {
 
 		PATCHES+=( "${FILESDIR}/${PN}-1.7.28-gstreamer-v4.patch" )
 	fi
-	if use pipelight; then
-		ewarn "Applying the unofficial Compholio patchset for Pipelight support,"
-		ewarn "which is unsupported by Wine developers. Please don't report bugs"
-		ewarn "to Wine bugzilla unless you can reproduce them with USE=-pipelight"
+	if use staging; then
+		ewarn "Applying the unofficial Wine-Staging patchset which is unsupported"
+		ewarn "by Wine developers. Please don't report bugs to Wine bugzilla"
+		ewarn "unless you can reproduce them with USE=-staging"
 
 		# epatch doesn't support binary patches and we ship our own pulse patches
-		emake -C "${WORKDIR}/${COMPHOLIO_P}/patches" \
-			$(echo ${COMPHOLIO_MAKE_ARGS}) \
+		emake -C "${WORKDIR}/${STAGING_P}/patches" \
+			$(echo ${STAGING_MAKE_ARGS}) \
 		    series
 
-		PATCHES+=( $(sed -e "s:^:${WORKDIR}/${COMPHOLIO_P}/patches/:" \
-		    "${WORKDIR}/${COMPHOLIO_P}/patches/series") )
+		PATCHES+=( $(sed -e "s:^:${WORKDIR}/${STAGING_P}/patches/:" \
+		    "${WORKDIR}/${STAGING_P}/patches/series") )
 
 		# epatch doesn't support binary patches
-		ebegin "Applying Compholio font patches"
-		for f in "${WORKDIR}/${COMPHOLIO_P}/patches/fonts-Missing_Fonts"/*.patch; do
-			"../${COMPHOLIO_P}/debian/tools/gitapply.sh" < "${f}" \
+		ebegin "Applying Wine-Staging font patches"
+		for f in "${WORKDIR}/${STAGING_P}/patches/fonts-Missing_Fonts"/*.patch; do
+			"../${STAGING_P}/debian/tools/gitapply.sh" < "${f}" \
 			    || die "Failed to apply ${f}"
 		done
 		eend
 	elif use pulseaudio; then
-		PATCHES+=( "../${COMPHOLIO_P}/patches/winepulse-PulseAudio_Support"/*.patch )
+		PATCHES+=( "../${STAGING_P}/patches/winepulse-PulseAudio_Support"/*.patch )
 	fi
 	autotools-utils_src_prepare
 
@@ -405,8 +421,11 @@ multilib_src_configure() {
 		$(use_with xml xslt)
 	)
 
-	use pulseaudio && myconf+=( --with-pulse )
-	use pipelight && myconf+=( --with-xattr )
+	use pulseaudio || use staging && myconf+=( $(use_with pulseaudio pulse) )
+	use staging && myconf+=( 
+		--with-xattr 
+		$(use_with s3tc txc_dxtn) 
+	)
 
 	local PKG_CONFIG AR RANLIB
 	# Avoid crossdev's i686-pc-linux-gnu-pkg-config if building wine32 on amd64; #472038

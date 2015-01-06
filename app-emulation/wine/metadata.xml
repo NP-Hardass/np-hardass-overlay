@@ -22,12 +22,12 @@ Think of Wine as a compatibility layer for running Windows programs. Wine does n
 	<flag name='prelink'>Run prelink on DLLs during build -- do not disable if you do not know what this means as it can break things at runtime</flag>
 	<flag name='realtime'>Pull in <pkg>sys-auth/rtkit</pkg> for low-latency pulseaudio support</flag>
 	<flag name='run-exes'>Use Wine to open and run .EXE and .MSI files</flag>
+	<flag name='s3tc'>Apply unofficial Wine-Staging patches for DXTn encoding/decoding support</flag>
 	<flag name='samba'>Add support for NTLM auth. see
 		http://wiki.winehq.org/NtlmAuthSetupGuide and
 		http://wiki.winehq.org/NtlmSigningAndSealing</flag>
 	<flag name='staging'>Apply unofficial Wine-Staging patches for advanced feature support that hasn't made it into upstream Wine yet;
 		use at your own peril</flag>
-	<flag name='txc_dxtn'>Apply unofficial Wine-Staging patches for DXTn encoding/decoding support</flag>
 	<flag name='win32'>Build a 32bit version of Wine (won't run Win64 binaries)</flag>
 	<flag name='win64'>Build a 64bit version of Wine (won't run Win32 binaries)</flag>
 </use>

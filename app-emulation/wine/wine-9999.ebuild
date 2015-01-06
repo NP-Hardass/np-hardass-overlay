@@ -26,6 +26,7 @@ fi
 GV="2.34"
 MV="4.5.4"
 STAGING_P="wine-staging-${PV}"
+STAGING_DIR="${WORKDIR}/${STAGING_P}"
 WINE_GENTOO="wine-gentoo-2013.06.24"
 DESCRIPTION="Free implementation of Windows(tm) on Unix"
 HOMEPAGE="http://www.winehq.org/"
@@ -47,13 +48,13 @@ fi
 
 LICENSE="LGPL-2.1"
 SLOT="0"
-IUSE="+abi_x86_32 +abi_x86_64 +alsa capi cups custom-cflags dos elibc_glibc +fontconfig +gecko gphoto2 gsm gstreamer +jpeg lcms ldap +mono mp3 ncurses netapi nls odbc openal opencl +opengl osmesa oss +perl pcap pipelight +png +prelink pulseaudio +realtime +run-exes samba scanner selinux +ssl staging test +threads +truetype txc_dxtn +udisks v4l +X xcomposite xinerama +xml"
+IUSE="+abi_x86_32 +abi_x86_64 +alsa capi cups custom-cflags dos elibc_glibc +fontconfig +gecko gphoto2 gsm gstreamer +jpeg lcms ldap +mono mp3 ncurses netapi nls odbc openal opencl +opengl osmesa oss +perl pcap pipelight +png +prelink pulseaudio +realtime +run-exes s3tc samba scanner selinux +ssl staging test +threads +truetype +udisks v4l +X xcomposite xinerama +xml"
 REQUIRED_USE="|| ( abi_x86_32 abi_x86_64 )
 	test? ( abi_x86_32 )
 	elibc_glibc? ( threads )
 	mono? ( abi_x86_32 )
 	pipelight? ( staging )
-	txc_dxtn? ( staging )
+	s3tc? ( staging )
 	osmesa? ( opengl )" #286560
 
 # FIXME: the test suite is unsuitable for us; many tests require net access
@@ -95,7 +96,7 @@ NATIVE_DEPEND="
 	osmesa? ( media-libs/mesa[osmesa] )
 	pcap? ( net-libs/libpcap )
 	staging? ( sys-apps/attr )
-	txc_dxtn? ( media-libs/libtxc_dxtn )
+	s3tc? ( media-libs/libtxc_dxtn )
 	pulseaudio? ( media-sound/pulseaudio )
 	xml? ( dev-libs/libxml2 dev-libs/libxslt )
 	scanner? ( media-gfx/sane-backends:= )
@@ -212,7 +213,7 @@ COMMON_DEPEND="
 					app-emulation/emul-linux-x86-baselibs[development,-abi_x86_32(-)]
 					>=sys-apps/attr-2.4.47-r1[abi_x86_32(-)]
 			) )
-			txc_dxtn? ( >=media-libs/libtxc_dxtn-1.0.1-r1[abi_x86_32(-)] )
+			s3tc? ( >=media-libs/libtxc_dxtn-1.0.1-r1[abi_x86_32(-)] )
 			xml? ( || (
 				>=app-emulation/emul-linux-x86-baselibs-20131008[development,-abi_x86_32(-)]
 				(
@@ -303,7 +304,7 @@ src_unpack() {
 		if use staging || use pulseaudio; then
 			EGIT_REPO_URI=${MY_GIT_SRC_URI}
 			unset ${PN}_LIVE_REPO;
-			EGIT_CHECKOUT_DIR=${WORKDIR}/${STAGING_P} git-r3_src_unpack || \
+			EGIT_CHECKOUT_DIR=${STAGING_DIR} git-r3_src_unpack || \
 			eerror "Failed to clone Wine-Staging repository."
 		fi
 	else
@@ -318,18 +319,13 @@ src_unpack() {
 
 src_prepare() {
 	local md5="$(md5sum server/protocol.def)"
-	local f
 	local PATCHES=(
 		"${FILESDIR}"/${PN}-1.5.26-winegcc.patch #260726
 		"${FILESDIR}"/${PN}-1.4_rc2-multilib-portage.patch #395615
 		"${FILESDIR}"/${PN}-1.7.12-osmesa-check.patch #429386
 		"${FILESDIR}"/${PN}-1.6-memset-O3.patch #480508
 	)
-	local STAGING_MAKE_ARGS="-W fonts-Missing_Fonts.ok"
 
-	use pipelight || STAGING_MAKE_ARGS="${STAGING_MAKE_ARGS} -W Pipelight.ok"
-	use txc_dxtn || STAGING_MAKE_ARGS="${STAGING_MAKE_ARGS} -W wined3d-CSMT_Helper.ok -W wined3d-CSMT_Main.ok -W d3dx9_36-DXTn.ok -W wined3d-DXTn.ok"
-	use pulseaudio || STAGING_MAKE_ARGS="${STAGING_MAKE_ARGS} -W winepulse-PulseAudio_Support.ok"
 	if use gstreamer; then
 		# See http://bugs.winehq.org/show_bug.cgi?id=30557
 		ewarn "Applying experimental patch to fix GStreamer support. Note that"
@@ -342,23 +338,19 @@ src_prepare() {
 		ewarn "by Wine developers. Please don't report bugs to Wine bugzilla"
 		ewarn "unless you can reproduce them with USE=-staging"
 
-		# epatch doesn't support binary patches and we ship our own pulse patches
-		emake -C "${WORKDIR}/${STAGING_P}/patches" \
-			$(echo ${STAGING_MAKE_ARGS}) \
-		    series
-
-		PATCHES+=( $(sed -e "s:^:${WORKDIR}/${STAGING_P}/patches/:" \
-		    "${WORKDIR}/${STAGING_P}/patches/series") )
-
-		# epatch doesn't support binary patches
-		ebegin "Applying Wine-Staging font patches"
-		for f in "${WORKDIR}/${STAGING_P}/patches/fonts-Missing_Fonts"/*.patch; do
-			"../${STAGING_P}/debian/tools/gitapply.sh" < "${f}" \
-			    || die "Failed to apply ${f}"
-		done
-		eend
+		local STAGING_EXCLUDE=""
+		use pipelight || STAGING_EXCLUDE="${STAGING_EXCLUDE} -W Pipelight"
+		
+		# Launch wine-staging patcher in a subshell, using epatch as a backend, and gitapply.sh as a backend for binary patches
+		ebegin "Running Wine-Staging patch installer"
+		(
+			set -- DESTDIR="${S}" --backend=epatch --all ${STAGING_EXCLUDE}
+			cd "${STAGING_DIR}/patches"
+			source "${STAGING_DIR}/patches/patchinstall.sh"
+		)
+		eend $?
 	elif use pulseaudio; then
-		PATCHES+=( "../${STAGING_P}/patches/winepulse-PulseAudio_Support"/*.patch )
+		PATCHES+=( "${STAGING_DIR}/patches/winepulse-PulseAudio_Support"/*.patch )
 	fi
 	autotools-utils_src_prepare
 
@@ -423,9 +415,11 @@ multilib_src_configure() {
 		$(use_with xml xslt)
 	)
 
-	use pulseaudio && myconf+=( --with-pulse )
-	use staging && myconf+=( --with-xattr )
-	use txc_dxtn && myconf+=( $(use_with txc_dxtn) )
+	use pulseaudio || use staging && myconf+=( $(use_with pulseaudio pulse) )
+	use staging && myconf+=( 
+		--with-xattr
+		$(use_with s3tc txc_dxtn)
+	)
 
 	local PKG_CONFIG AR RANLIB
 	# Avoid crossdev's i686-pc-linux-gnu-pkg-config if building wine32 on amd64; #472038
