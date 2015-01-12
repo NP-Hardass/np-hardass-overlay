@@ -422,9 +422,9 @@ multilib_src_configure() {
 	)
 
 	use pulseaudio || use staging && myconf+=( $(use_with pulseaudio pulse) )
-	use staging && myconf+=( 
-		--with-xattr 
-		$(use_with s3tc txc_dxtn) 
+	use staging && myconf+=(
+		--with-xattr
+		$(use_with s3tc txc_dxtn)
 	)
 
 	local PKG_CONFIG AR RANLIB

@@ -345,7 +345,7 @@ src_prepare() {
 
 		local STAGING_EXCLUDE=""
 		use pipelight || STAGING_EXCLUDE="${STAGING_EXCLUDE} -W Pipelight"
-		
+
 		# Launch wine-staging patcher in a subshell, using epatch as a backend, and gitapply.sh as a backend for binary patches
 		ebegin "Running Wine-Staging patch installer"
 		(
@@ -421,7 +421,7 @@ multilib_src_configure() {
 	)
 
 	use pulseaudio || use staging && myconf+=( $(use_with pulseaudio pulse) )
-	use staging && myconf+=( 
+	use staging && myconf+=(
 		--with-xattr
 		$(use_with s3tc txc_dxtn)
 	)
