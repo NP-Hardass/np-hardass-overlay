@@ -303,8 +303,7 @@ src_unpack() {
 		if use staging || use pulseaudio; then
 			EGIT_REPO_URI=${MY_GIT_SRC_URI}
 			unset ${PN}_LIVE_REPO;
-			EGIT_CHECKOUT_DIR=${WORKDIR}/${STAGING_P} git-r3_src_unpack || \
-			die "Failed to clone Wine-Staging repository."
+			EGIT_CHECKOUT_DIR=${WORKDIR}/${STAGING_P} git-r3_src_unpack
 		fi
 	else
 		unpack ${MY_P}.tar.bz2
