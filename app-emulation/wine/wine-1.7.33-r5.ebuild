@@ -38,7 +38,7 @@ SRC_URI="${SRC_URI}
 	http://dev.gentoo.org/~tetromino/distfiles/${PN}/${WINE_GENTOO}.tar.bz2"
 
 if [[ ${PV} == "9999" ]] ; then
-	use staging || use pulseaudio && MY_GIT_SRC_URI="git://github.com/wine-compholio/wine-staging.git"
+	MY_GIT_SRC_URI="git://github.com/wine-compholio/wine-staging.git"
 else
 	SRC_URI="${SRC_URI}
 	staging? ( https://github.com/wine-compholio/wine-staging/archive/v${PV}.tar.gz -> ${STAGING_P}.tar.gz )
@@ -304,7 +304,7 @@ src_unpack() {
 			EGIT_REPO_URI=${MY_GIT_SRC_URI}
 			unset ${PN}_LIVE_REPO;
 			EGIT_CHECKOUT_DIR=${WORKDIR}/${STAGING_P} git-r3_src_unpack || \
-			eerror "Failed to clone Wine-Staging repository."
+			die "Failed to clone Wine-Staging repository."
 		fi
 	else
 		unpack ${MY_P}.tar.bz2
