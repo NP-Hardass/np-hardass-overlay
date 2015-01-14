@@ -2,6 +2,10 @@
 # Copyright 1999-2015 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/app-emulation/wine/ChangeLog,v 1.524 2014/12/16 15:06:28 pacho Exp $
 
+  14 Jan 2015; <np.hardass@gmail.com> wine-9999.ebuild:
+  use new wine-staging option --no-autoconf so that autoconf and
+  tools/make_requests aren't called twice.
+
 *wine-1.7.34 (12 Jan 2015)
 *wine-1.7.33-r5 (12 Jan 2015)
 
