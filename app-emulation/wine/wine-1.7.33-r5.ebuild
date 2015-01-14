@@ -209,8 +209,8 @@ COMMON_DEPEND="
 				>=media-sound/pulseaudio-5.0[abi_x86_32(-)]
 			) )
 			staging? ( || (
-					app-emulation/emul-linux-x86-baselibs[development,-abi_x86_32(-)]
-					>=sys-apps/attr-2.4.47-r1[abi_x86_32(-)]
+				app-emulation/emul-linux-x86-baselibs[development,-abi_x86_32(-)]
+				>=sys-apps/attr-2.4.47-r1[abi_x86_32(-)]
 			) )
 			s3tc? ( >=media-libs/libtxc_dxtn-1.0.1-r1[abi_x86_32(-)] )
 			xml? ( || (
