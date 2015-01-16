@@ -8,8 +8,9 @@ This is a list of packages and any associated notes:
 
 | Package				| Description								| Notes										|
 | ------------------------------------- | --------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| app-arch/engrampa			| Archive manager for MATE						| Copied from Gentoo, bugfix for USE="-caja"					|
 | app-crypt/msed			| Manage Self Encrypting Drive tool and Pre-Boot-Authentication Image	| I am the author and maintainer of this ebuild					|
-| app-emulation/wine			| Free implementation of Windows(tm) on Unix				| Copied from Gentoo, pcap use flag from ryao, wine-staging and live fixes	|
+| app-emulation/wine			| Free implementation of Windows(tm) on Unix				| Copied from Gentoo, wine-staging and live fixes, version bumps		|
 | app-emulation/winetricks		| A tool for managing wine DLLs						| Copied from Gentoo, MATE dependency hacks					|
 | app-laptop/dellfand			| Dell laptop fan regulator						| Copied from foo-overlay							|
 | games-action/minecraft		| A cube based sandbox game						| Copied from Sabayon, fixed icedtea-bin dependency issue			|
@@ -22,7 +23,7 @@ This is a list of packages and any associated notes:
 | net-fs/openafs			| OpenAFS distributed filesystem					| Copied from Gentoo, version bump						|
 | net-fs/openafs-kernel			| OpenAFS kernel module							| Copied from Gentoo, version bump						|
 | net-misc/connman-ui-gtk		| GTK applet for Connman network config tool				| Copied from BGO, live ebuild							|
-| net-misc/gopenvpn			| GTK GUI for OpenVPN							| Currently has a bug, editing configurations in the GUI doesn't work		|
+| net-misc/gopenvpn			| GTK GUI for OpenVPN							| Currently has a bug(upstream), editing configurations in the GUI doesn't work	|
 | net-misc/linuxptp			| Precision Time Protocol application					| Copied from rion								|
 | sys-apps/915resolution		| Utility to patch VBIOS of Intel Chipsets				| Copied from Gentoo								|
 | sys-apps/gnome-disk-utility		| Utility for analyzing disk usage					| Copied from Gentoo, maintain old version: Gnome 2 branch			|
@@ -41,7 +42,7 @@ Layman allows for the easy management of overlays.
 If you haven’t used layman yet, just run these commands:
 
 	emerge -av layman
-	echo PORTDIR_OVERLAY=\"\" >> /etc/portage//make.conf
+	echo PORTDIR_OVERLAY=\"\" >> /etc/portag//make.conf
 	echo "source /var/lib/layman/make.conf" >> /etc/make.conf
 	layman -f
 
