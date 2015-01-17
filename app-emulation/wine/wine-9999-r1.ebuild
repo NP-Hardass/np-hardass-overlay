@@ -55,15 +55,13 @@ REQUIRED_USE="|| ( abi_x86_32 abi_x86_64 )
 	mono? ( abi_x86_32 )
 	pipelight? ( staging )
 	s3tc? ( staging )
+	staging? ( perl )
 	osmesa? ( opengl )" #286560
 
 # FIXME: the test suite is unsuitable for us; many tests require net access
 # or fail due to Xvfb's opengl limitations.
 RESTRICT="test"
 
-# NOTE: if a version is specified, is is likely not the version required. 
-# Versions listed are probably only to satisfy multilib requirements.
-# Check an old version of the package to determine the true versions.
 COMMON_DEPEND="
 	truetype? ( >=media-libs/freetype-2.0.0[${MULTILIB_USEDEP}] )
 	capi? ( net-dialup/capi4k-utils )

@@ -2,6 +2,9 @@
 # Copyright 1999-2015 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/app-emulation/wine/ChangeLog,v 1.524 2014/12/16 15:06:28 pacho Exp $
 
+  16 Jan 2015; <np.hardass@gmail.com> wine-9999-r1.ebuild:
+  Minor tweaks to comments and perl use flags
+
 *wine-9999-r1 (16 Jan 2015)
 
   16 Jan 2015; <np.hardass@gmail.com> +wine-9999-r1.ebuild:
