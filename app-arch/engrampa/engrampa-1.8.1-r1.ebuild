@@ -21,9 +21,6 @@ KEYWORDS="~amd64 ~x86"
 
 IUSE="caja"
 
-# GLib-GIO-ERROR **: Settings schema 'org.mate.caja.preferences' is not installed
-#
-# ... thus we depend on Caja regardless of the Caja USE flag. Patches welcome.
 RDEPEND=">=x11-libs/gtk+-2.21.4:2
 	>=dev-libs/glib-2.25.5:2
 	>=dev-libs/json-glib-0.14:0
