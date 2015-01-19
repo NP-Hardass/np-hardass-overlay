@@ -30,6 +30,7 @@ RDEPEND=">=x11-libs/gtk+-2.21.4:2
 	x11-libs/gdk-pixbuf:2
 	x11-libs/pango:0
 	virtual/libintl:0
+	x11-libs/libSM
 	caja? ( || ( >=mate-base/caja-1.8:0 >=mate-base/mate-file-manager-1.6:0 ) )
 	!!app-arch/mate-file-archiver"
 
