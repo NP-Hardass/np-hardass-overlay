@@ -2,6 +2,12 @@
 # Copyright 1999-2015 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/app-emulation/wine/ChangeLog,v 1.524 2014/12/16 15:06:28 pacho Exp $
 
+*wine-1.7.34-r1 (19 Jan 2015)
+
+  19 Jan 2015; <np.hardass@gmail.com> -wine-1.7.34.ebuild, +wine-1.7.34-r1.ebuild,
+  files/wine-staging-gentoo-epatch-support.patch:
+  Update staging patch for 1.7.34
+
   16 Jan 2015; <np.hardass@gmail.com> wine-9999-r1.ebuild:
   Minor tweaks to comments and perl use flags
 
