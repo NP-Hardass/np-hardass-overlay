@@ -1,0 +1,7 @@
+# NP-Hardass <np.hardass@gmail.com> (21 Jan 2015)
+# Masked for removal in 30 days.
+# Transitioning to separate wine-overlay so that 
+# use of the wine ebuilds is unencumbered by the
+# rest of my personal overlay.
+# See: https://github.com/NP-Hardass/wine-overlay
+app-emulation/wine
