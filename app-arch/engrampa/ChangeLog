@@ -4,7 +4,7 @@
 
 *engrampa-1.8.1-r1 (16 Jan 2015)
 
-  16 Jan 2015; <np.hardass@gmail.com> +engrampa-1.8.1-r1.ebuild,
+  16 Jan 2015; NP-Hardass <np.hardass@gmail.com> +engrampa-1.8.1-r1.ebuild,
   +files/engrampa-1.8.1-caja-schema-fix.patch, +metadata.xml:
   Import patch to fix caja dependency issue
 

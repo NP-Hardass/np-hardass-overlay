@@ -4,33 +4,33 @@
 
 *wine-1.7.34-r2 (19 Jan 2015)
 
-  19 Jan 2015; <np.hardass@gmail.com> -wine-1.7.34-r1.ebuild,
+  19 Jan 2015; NP-Hardass <np.hardass@gmail.com> -wine-1.7.34-r1.ebuild,
   +wine-1.7.34-r2.ebuild:
   Update 1.7.34 to use new deps used in wine-9999-r1
 
 *wine-1.7.34-r1 (19 Jan 2015)
 
-  19 Jan 2015; <np.hardass@gmail.com> -wine-1.7.34.ebuild, +wine-1.7.34-r1.ebuild,
+  19 Jan 2015; NP-Hardass <np.hardass@gmail.com> -wine-1.7.34.ebuild, +wine-1.7.34-r1.ebuild,
   files/wine-staging-gentoo-epatch-support.patch:
   Update staging patch for 1.7.34
 
-  16 Jan 2015; <np.hardass@gmail.com> wine-9999-r1.ebuild:
+  16 Jan 2015; NP-Hardass <np.hardass@gmail.com> wine-9999-r1.ebuild:
   Minor tweaks to comments and perl use flags
 
 *wine-9999-r1 (16 Jan 2015)
 
-  16 Jan 2015; <np.hardass@gmail.com> +wine-9999-r1.ebuild:
+  16 Jan 2015; NP-Hardass <np.hardass@gmail.com> +wine-9999-r1.ebuild:
   Slim dependencies and use ${MULTILIB_USEDEP} for managing multilib
   dependencies
 
-  14 Jan 2015; <np.hardass@gmail.com> wine-9999.ebuild:
+  14 Jan 2015; NP-Hardass <np.hardass@gmail.com> wine-9999.ebuild:
   use new wine-staging option --no-autoconf so that autoconf and
   tools/make_requests aren't called twice.
 
 *wine-1.7.34 (12 Jan 2015)
 *wine-1.7.33-r5 (12 Jan 2015)
 
-  12 Jan 2015; <np.hardass@gmail.com> -wine-1.7.33.ebuild, -wine-1.7.33-r1.ebuild,
+  12 Jan 2015; NP-Hardass <np.hardass@gmail.com> -wine-1.7.33.ebuild, -wine-1.7.33-r1.ebuild,
   -wine-1.7.33-r2.ebuild, -wine-1.7.33-r3.ebuild, -wine-1.7.33-r4.ebuild,
   +wine-1.7.33-r5.ebuild, +wine-1.7.34.ebuild, wine-9999.ebuild,
   +files/wine-staging-gentoo-epatch-support.patch, metadata.xml:
@@ -39,41 +39,41 @@
 
 *wine-1.7.33-r4 (05 Jan 2015)
 
-  05 Jan 2015; <np.hardass@gmail.com> wine-1.7.33.ebuild, +wine-1.7.33-r4.ebuild,
+  05 Jan 2015; NP-Hardass <np.hardass@gmail.com> wine-1.7.33.ebuild, +wine-1.7.33-r4.ebuild,
   wine-9999.ebuild, metadata.xml:
   Updated as per bug #534732
 
 *wine-1.7.33-r3 (04 Jan 2015)
 
-  04 Jan 2015; <np.hardass@gmail.com> +wine-1.7.33-r3.ebuild:
+  04 Jan 2015; NP-Hardass <np.hardass@gmail.com> +wine-1.7.33-r3.ebuild:
   Use same ebuild for live and non-line wine
 
-  04 Jan 2015; <np.hardass@gmail.com> metadata.xml:
+  04 Jan 2015; NP-Hardass <np.hardass@gmail.com> metadata.xml:
   Update the metadata.xml to describe the new use flag "staging" and refactor
   out "Compholio" references
 
-  04 Jan 2015; <np.hardass@gmail.com> wine-9999.ebuild:
+  04 Jan 2015; NP-Hardass <np.hardass@gmail.com> wine-9999.ebuild:
   Updated git clone to git-r3_src_fetch for wine staging as suggested by eroen.
 
 *wine-9999 (03 Jan 2015)
 
-  03 Jan 2015; <np.hardass@gmail.com> +wine-9999.ebuild:
+  03 Jan 2015; NP-Hardass <np.hardass@gmail.com> +wine-9999.ebuild:
   Updated to git-r3 eclass and includes bad hack to enable using wine-staging
   from git.
 
 *wine-1.7.33-r2 (03 Jan 2015)
 
-  03 Jan 2015; <np.hardass@gmail.com> +wine-1.7.33-r2.ebuild:
+  03 Jan 2015; NP-Hardass <np.hardass@gmail.com> +wine-1.7.33-r2.ebuild:
   Add a staging use flag and make pipelight dependent on it.
 
 *wine-1.7.33-r1 (02 Jan 2015)
 
-  02 Jan 2015; <np.hardass@gmail.com> +wine-1.7.33-r1.ebuild:
+  02 Jan 2015; NP-Hardass <np.hardass@gmail.com> +wine-1.7.33-r1.ebuild:
   refactor COMPHOLIO_P to STAGING_P
 
 *wine-1.7.33 (02 Jan 2015)
 
-  02 Jan 2015; <np.hardass@gmail.com> +wine-1.7.33.ebuild,
+  02 Jan 2015; NP-Hardass <np.hardass@gmail.com> +wine-1.7.33.ebuild,
   +files/wine-1.1.15-winegcc.patch,
   +files/wine-1.2.3-msxml3-libxml2-headers.patch,
   +files/wine-1.4_rc2-multilib-portage.patch,

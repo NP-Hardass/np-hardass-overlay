@@ -4,7 +4,7 @@
 
 *pithos-0.3.17-r3 (15 Dec 2014)
 
-  15 Dec 2014; <np.hardass@gmail.com> -pithos-0.3.17-r2.ebuild,
+  15 Dec 2014; NP-Hardass <np.hardass@gmail.com> -pithos-0.3.17-r2.ebuild,
   +pithos-0.3.17-r3.ebuild, -pithos-0.3.18.ebuild,
   -files/pithos-0.3.18-detect-datadir.patch,
   -files/pithos-0.3.18-dont-notify-volume.patch:
