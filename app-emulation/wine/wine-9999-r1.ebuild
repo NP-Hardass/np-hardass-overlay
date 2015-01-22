@@ -70,7 +70,7 @@ COMMON_DEPEND="
 	fontconfig? ( media-libs/fontconfig:=[${MULTILIB_USEDEP}] )
 	gphoto2? ( media-libs/libgphoto2:=[${MULTILIB_USEDEP}] )
 	openal? ( media-libs/openal:=[${MULTILIB_USEDEP}] )
-	gstreamer? ( 
+	gstreamer? (
 		media-libs/gstreamer:0.10[${MULTILIB_USEDEP}]
 		media-libs/gst-plugins-base:0.10[${MULTILIB_USEDEP}]
 	)
