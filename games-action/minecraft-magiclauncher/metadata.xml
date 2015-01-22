@@ -3,8 +3,8 @@
 <pkgmetadata>
 <herd>java</herd>
 <maintainer>
-<email>adam.b.feldman at gmail.com</email>
-<name>Adam Feldman</name>
+<email>np.hardass@gmail.com</email>
+<name>NP-Hardass</name>
 </maintainer>
 <longdescription lang="en">
 MagicLauncher is a launcher for Minecraft that gives the user control over Minecraft versioning, allows for easy loading and unloading of modules, and allows for simple java VM parameter editing.
