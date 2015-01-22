@@ -8,7 +8,7 @@ This is a list of packages and any associated notes:
 
 | Package				| Description								| Notes										|
 | ------------------------------------- | --------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
-| app-arch/engrampa			| Archive manager for MATE						| Copied from Gentoo, bugfix for USE="-caja"					|
+| <app-arch/engrampa>			| Archive manager for MATE						| Copied from Gentoo, bugfix for USE="-caja"					|
 | app-crypt/msed			| Manage Self Encrypting Drive tool and Pre-Boot-Authentication Image	| I am the author and maintainer of this ebuild					|
 | app-emulation/wine			| Free implementation of Windows(tm) on Unix				| Copied from Gentoo, wine-staging and live fixes, version bumps		|
 | app-emulation/winetricks		| A tool for managing wine DLLs						| Copied from Gentoo, MATE dependency hacks					|
