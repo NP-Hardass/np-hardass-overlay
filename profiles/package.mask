@@ -4,4 +4,4 @@
 # use of the wine ebuilds is unencumbered by the
 # rest of my personal overlay.
 # See: https://github.com/NP-Hardass/wine-overlay
-app-emulation/wine
+app-emulation/wine::np-hardass-overlay
