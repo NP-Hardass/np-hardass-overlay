@@ -36,7 +36,7 @@ This is a list of packages and any associated notes:
 | [sys-apps/915resolution](sys-apps/915resolution)				| Utility to patch VBIOS of Intel Chipsets				| Copied from Gentoo								|
 | [sys-apps/gnome-disk-utility](sys-apps/gnome-disk-utility)			| Utility for analyzing disk usage					| Copied from Gentoo, maintain old version: Gnome 2 branch			|
 | [sys-apps/gprename](sys-apps/gprename)					| Perl GUI for batch file/folder renaming				| Copied from BGO, version bump							|
-| [sys-apps/glibc](sys-apps-glibc)						| GNU libc6								| Copied from Gentoo, patches for valgrind+strlen issues			|
+| [sys-apps/glibc](sys-apps/glibc)						| GNU libc6								| Copied from Gentoo, patches for valgrind+strlen issues			|
 | [www-client/palemoon](www-client/palemoon)					| A Firefox fork							| Copied from farmboy0, version bump						|
 | [www-plugins/pipelight](www-plugins/pipelight)				| A Windows NSPlugin compatibility program				| Copied from sabayon, version bump						|
 | [x11-themes/gdm-themes](x11-themes/gdm-themes)				| GDM Themes								| Copied from Gentoo, maintain old version: Gnome 2 branch			|
