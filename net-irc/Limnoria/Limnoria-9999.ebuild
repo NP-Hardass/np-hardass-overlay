@@ -46,7 +46,7 @@ RDEPEND="${DEPEND}"
 DEPEND="${DEPEND}
 	test? ( dev-python/mock[${PYTHON_USEDEP}] )"
 
-DOCS="ACKS RELNOTES docs/[!man]*"
+DOCS="ACKS RELNOTES"
 
 src_unpack() {
 	if [[ ${PV} == "9999" ]]; then
@@ -58,7 +58,7 @@ src_unpack() {
 
 src_install() {
 	distutils-r1_src_install
-	doman docs/man/* || die "doman failed"
+	doman man/* || die "doman failed"
 }
 
 pkg_postinst() {
