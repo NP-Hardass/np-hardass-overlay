@@ -40,6 +40,7 @@ src_unpack() {
 src_install() {
 	installation() {
 		for plugin in *; do
+			[[ -d ${plugin} ]] || continue #skip over non-plugin files
 			case ${plugin} in
 				BadWords|Dunno|Success)
 					# These plugins are part of supybot-0.83.4 now, so skip them here.
@@ -53,7 +54,7 @@ src_install() {
 			doins ${plugin}/*
 		done
 	}
-	python_execute_function installation
+	python_foreach_impl installation || die "Plugin Installation failed"
 }
 
 pkg_postinst() {
