@@ -1,6 +1,14 @@
 Welcome to NP-Hardass' Gentoo Overlay!
 ======================================
 
+Important Note
+--------------
+This overlay contains some system packages like glibc.  As such, you should
+probably consider this overlay to be "unsafe" and treat it as such.
+To do so for an example package `cat-egory/pkgname`:
+	# echo "*/*::np-hardass-overlay" >> /etc/portage/package.mask
+	# echo "cat-egory/pkgname::np-hardass-overlay" >> /etc/portage/package.unmask
+
 Packages
 --------
 
