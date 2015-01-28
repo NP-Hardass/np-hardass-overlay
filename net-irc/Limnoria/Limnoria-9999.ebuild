@@ -45,7 +45,7 @@ RDEPEND="
 DEPEND="${RDEPEND}
 	test? ( dev-python/mock[${PYTHON_USEDEP}] )"
 
-DOCS="ACKS RELNOTES"
+DOCS="ACKS RELNOTES ChangeLog README.md"
 
 src_unpack() {
 	if [[ ${PV} == "9999" ]]; then
@@ -61,6 +61,7 @@ src_install() {
 }
 
 pkg_postinst() {
+	elog "Complete user documentation is available at https://limnoria-doc.readthedocs.org/"
 	elog "Use supybot-wizard to create a configuration file."
 	if use twisted; then
 		elog "If you want to use Twisted as your supybot.driver, add it to your config file:"
