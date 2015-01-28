@@ -16,14 +16,14 @@ if [[ ${PV} == "9999" ]]; then
 	SRC_URI=""
 else
 	SRC_URI=""#TODO
-	KEYWORDS="amd64 ~arm ppc ~sparc x86 ~x86-fbsd ~amd64-linux ~x86-linux ~ppc-macos ~sparc-solaris"
+	KEYWORDS="~amd64 ~x86"
 fi
 
 LICENSE="BSD"
 SLOT="0"
 IUSE="crypt encoding plugins test time twisted"
 
-DEPEND="
+RDEPEND="
 	dev-python/ecdsa[${PYTHON_USEDEP}]
 	dev-python/feedparser[${PYTHON_USEDEP}]
 	dev-python/socksipy[${PYTHON_USEDEP}]
@@ -42,8 +42,7 @@ DEPEND="
 	!net-irc/supybot
 	!<net-irc/supybot-plugins-9999
 	"
-RDEPEND="${DEPEND}"
-DEPEND="${DEPEND}
+DEPEND="${RDEPEND}
 	test? ( dev-python/mock[${PYTHON_USEDEP}] )"
 
 DOCS="ACKS RELNOTES"
