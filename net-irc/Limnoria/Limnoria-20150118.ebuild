@@ -7,18 +7,21 @@ PYTHON_COMPAT=( python2_7 )
 
 inherit distutils-r1
 
-DESCRIPTION="Python based extensible IRC infobot and channel bot"
-HOMEPAGE="http://supybot.aperio.fr/"
-if [[ ${PV} == "9999" ]]; then
+MY_PV="${PV:0:4}-${PV:4:2}-${PV:6:2}"
+
+if [[ ${PV} == "99999999" ]]; then
 	EGIT_REPO_URI="git://github.com/ProgVal/Limnoria.git"
 	EGIT_BRANCH="master"
 	inherit git-r3
 	SRC_URI=""
 else
-	SRC_URI=""#TODO
+	SRC_URI="https://github.com/ProgVal/${PN}/archive/master-${MY_PV}.tar.gz -> ${P}.tar.gz"
 	KEYWORDS="~amd64 ~x86"
+	S="${WORKDIR}/Limnoria-master-${MY_PV}"
 fi
 
+DESCRIPTION="Python based extensible IRC infobot and channel bot"
+HOMEPAGE="http://supybot.aperio.fr/"
 LICENSE="BSD"
 SLOT="0"
 IUSE="crypt encoding plugins test time twisted"
@@ -48,7 +51,7 @@ DEPEND="${RDEPEND}
 DOCS="ACKS RELNOTES ChangeLog README.md"
 
 src_unpack() {
-	if [[ ${PV} == "9999" ]]; then
+	if [[ ${PV} == "99999999" ]]; then
 		git-r3_src_unpack
 	else
 		unpack ${P}.tar.gz
