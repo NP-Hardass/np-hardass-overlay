@@ -7,7 +7,7 @@ EAPI=5
 # project is hosted on github.com, so git-2 is needed (git is deprecated)
 inherit git-r3 autotools
 
-DESCRIPTION="gopenvpn is a gtk tray icon for openvpn"
+DESCRIPTION="A GTK tray icon and GUI for managing OpenVPN connections"
 HOMEPAGE="http://gopenvpn.sourceforge.net/"
 
 #EGIT_REPO_URI="git://gopenvpn.git.sourceforge.net/gitroot/gopenvpn/gopenvpn.git"
@@ -32,10 +32,10 @@ src_prepare(){
 		sed -i -e 's:read dummy < /dev/tty::' "${T}/gettextize" || die
 		einfo "Running gettextize -f --no-changelog..."
 		"${T}"/gettextize -f --no-changelog > /dev/null || die "gettexize failed"
-		
+
 		sed -i '124s/.*/AC_CONFIG_FILES([pixmaps\/Makefile/' configure.ac
 		#sed -i '125s/.*/AC_CONFIG_FILES([pixmaps\/Makefile/' configure.ac
-		
+
 		eautoreconf
 		eautoconf
 }

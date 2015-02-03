@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<longdescription lang="en">
+		This GTK GUI and tray icon provide an easy way to manage OpenVPN
+		connections.
+	</longdescription>
+	<maintainer>
+		<email>np.hardass@gmail.com</email>
+		<name>NP-Hardass</name>
+	</maintainer>
+</pkgmetadata>
