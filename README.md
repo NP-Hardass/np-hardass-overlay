@@ -1,6 +1,8 @@
 Welcome to NP-Hardass' Gentoo Overlay!
 ======================================
 
+Repoman Status: [![Build Status](https://travis-ci.org/NP-Hardass/np-hardass-overlay.svg?branch=master)](https://travis-ci.org/NP-Hardass/np-hardass-overlay)
+
 Important Note
 --------------
 This overlay contains some system packages like glibc.  As such, you should
