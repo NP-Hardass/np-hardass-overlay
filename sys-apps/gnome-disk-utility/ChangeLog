@@ -1,6 +1,10 @@
 # ChangeLog for sys-apps/gnome-disk-utility
-# Copyright 1999-2014 Gentoo Foundation; Distributed under the GPL v2
+# Copyright 1999-2015 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/sys-apps/gnome-disk-utility/ChangeLog,v 1.98 2014/07/23 15:37:46 ago Exp $
+
+  04 Feb 2015; NP-Hardass <np.hardass@gmail.com>
+  gnome-disk-utility-3.0.2-r201.ebuild:
+  Drop keywords and update eapi
 
   23 Jul 2014; Agostino Sarubbo <ago@gentoo.org>
   gnome-disk-utility-3.12.1.ebuild:
