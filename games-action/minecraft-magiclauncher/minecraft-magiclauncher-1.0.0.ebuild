@@ -5,8 +5,8 @@
 EAPI="5"
 inherit eutils games java-pkg-2
 
-DESCRIPTION="A launcher for Minecraft.  Customize launch parameters, easily load
-and unload mods, and manage multiple minecraft versions."
+DESCRIPTION="A Minecraft launcher. Customize parameters, easily
+load/unload mods, manage multiple MC versions"
 HOMEPAGE="http://www.magiclauncher.com"
 SRC_URI="http://www.magiclauncher.com/download.php?f=MagicLauncher-1.0.0.jar -> $P.jar"
 LICENSE="as-is"
@@ -37,7 +37,7 @@ src_install() {
 	# Launching with -jar seems to create classpath problems.
 	java-pkg_dolauncher "${PN}" -into "${GAMES_PREFIX}"
 
-	doicon "${FILESDIR}/${PN}.svg" || die
+	doicon "${FILESDIR}/${PN}.png" || die
 	make_desktop_entry "${PN}" "MagicLauncher"
 
 	prepgamesdirs
