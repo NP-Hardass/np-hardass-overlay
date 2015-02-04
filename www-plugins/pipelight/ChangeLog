@@ -1,7 +1,0 @@
-# ChangeLog for www-plugins/pipelight
-# Copyright 1999-2014 Gentoo Foundation; Distributed under the GPL v2
-
-  14 Jul 2014; NP-Hardass <np.hardass@gmail.com> +pipelight-0.2.7.1.ebuild,
-  +metadata.xml, +ChangeLog, +files/license.txt, +Manifest:
-  Updated pipelight ebuild from Sabayon, cleaned it up, made it more modular,
-  and set it up for the latest version.
