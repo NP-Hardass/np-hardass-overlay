@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<longdescription lang="en">
+		Dwarf Fortress is an indie, roguelike game that is set in a fantasy
+		realm.  It uses text-based graphics and procedural generation
+		to give the user endless fun while they manage their dwarves and their
+		their civilization.
+	</longdescription>
+</pkgmetadata>

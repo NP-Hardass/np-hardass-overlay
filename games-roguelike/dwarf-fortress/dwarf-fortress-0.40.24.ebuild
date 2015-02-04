@@ -1,8 +1,8 @@
-# Copyright 1999-2012 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-EAPI=3
+EAPI=5
 
 inherit games versionator
 
@@ -14,38 +14,57 @@ DESCRIPTION="A single-player fantasy game"
 HOMEPAGE="http://www.bay12games.com/dwarves"
 SRC_URI="http://www.bay12games.com/dwarves/${MY_P}_linux.tar.bz2"
 
-LICENSE="as-is"
+LICENSE="Dwarf-Fortress"
 SLOT="0"
-KEYWORDS="~amd64 ~x86 -*"
+KEYWORDS="-* ~x86 ~amd64"
 IUSE=""
-# this is all precompiled
-RESTRICT="strip"
+# this is all precompiled and only available at SRC_URI
+RESTRICT="strip mirror"
 
+# Almost all of these were determined from ldd'ing the
+# binary.  libsndfile, openal, and libXcursor were
+# determined from runtime errors in the game
 RDEPEND="
-	virtual/glu
-	amd64? (
-		app-emulation/emul-linux-x86-baselibs
-		app-emulation/emul-linux-x86-gtklibs
-		app-emulation/emul-linux-x86-opengl
-		app-emulation/emul-linux-x86-sdl
-		app-emulation/emul-linux-x86-soundlibs
-		app-emulation/emul-linux-x86-xlibs
-	)
-	x86? (
-		media-libs/fmod:1
-		media-libs/freetype
-		media-libs/libsdl[opengl,video,X]
-		media-libs/libsndfile[alsa]
-		media-libs/openal
-		media-libs/sdl-image[png,tiff,jpeg]
-		media-libs/sdl-ttf
-		sys-libs/zlib
-		x11-libs/cairo[xcb,X]
-		x11-libs/gtk+:2[xinerama]
-		x11-libs/libXcomposite
-		x11-libs/libXcursor
-		x11-libs/pango[X]
-	)"
+	app-arch/bzip2[abi_x86_32]
+	dev-libs/atk[abi_x86_32]
+	dev-libs/expat[abi_x86_32]
+	dev-libs/glib[abi_x86_32]
+	dev-libs/libffi[abi_x86_32]
+	media-gfx/graphite2[abi_x86_32]
+	media-libs/fontconfig[abi_x86_32]
+	media-libs/freetype[abi_x86_32]
+	media-libs/harfbuzz[abi_x86_32]
+	media-libs/libpng:0[abi_x86_32]
+	media-libs/libsdl[opengl,video,X,abi_x86_32]
+	media-libs/libsndfile[alsa,abi_x86_32]
+	media-libs/mesa[abi_x86_32]
+	media-libs/openal[abi_x86_32]
+	media-libs/sdl-image[png,tiff,jpeg,abi_x86_32]
+	media-libs/sdl-ttf[abi_x86_32]
+	amd64? ( sys-libs/glibc[multilib] )
+	x86? ( sys-libs/glibc )
+	sys-libs/zlib[abi_x86_32]
+	virtual/glu[abi_x86_32]
+	virtual/opengl[abi_x86_32]
+	x11-libs/cairo[xcb,X,abi_x86_32]
+	x11-libs/gdk-pixbuf[abi_x86_32]
+	x11-libs/gtk+:2[xinerama,abi_x86_32]
+	x11-libs/libdrm[abi_x86_32]
+	x11-libs/libX11[abi_x86_32]
+	x11-libs/libXau[abi_x86_32]
+	x11-libs/libXcomposite[abi_x86_32]
+	x11-libs/libXcursor[abi_x86_32]
+	x11-libs/libXdamage[abi_x86_32]
+	x11-libs/libXdmcp[abi_x86_32]
+	x11-libs/libXfixes[abi_x86_32]
+	x11-libs/libXinerama[abi_x86_32]
+	x11-libs/libXrender[abi_x86_32]
+	x11-libs/libXxf86vm[abi_x86_32]
+	x11-libs/libxcb[abi_x86_32]
+	x11-libs/libxshmfence[abi_x86_32]
+	x11-libs/pango[X,abi_x86_32]
+	x11-libs/pixman[abi_x86_32]"
+DEPEND=""
 
 S=${WORKDIR}/${MY_PN}_linux
 
