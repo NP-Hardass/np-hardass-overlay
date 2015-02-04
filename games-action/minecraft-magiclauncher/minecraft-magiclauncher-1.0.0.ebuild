@@ -1,8 +1,8 @@
-# Copyright 1999-2013 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-EAPI="2"
+EAPI="5"
 inherit eutils games java-pkg-2
 
 DESCRIPTION="A launcher for Minecraft.  Customize launch parameters, easily load
@@ -11,7 +11,7 @@ HOMEPAGE="http://www.magiclauncher.com"
 SRC_URI="http://www.magiclauncher.com/download.php?f=MagicLauncher-1.0.0.jar -> $P.jar"
 LICENSE="as-is"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
+KEYWORDS="~amd64"
 IUSE=""
 RESTRICT="mirror"
 
