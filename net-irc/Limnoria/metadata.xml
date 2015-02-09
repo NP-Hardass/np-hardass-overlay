@@ -7,9 +7,5 @@
 	</maintainer>
 	<use>
 		<flag name="crypt">Enables user authentication with GPG</flag>
-		<flag name="encoding">Enables better encoding handling</flag>
-		<flag name="plugins">Pulls in <pkg>net-irc/Limnoria-plugins</pkg> for additional plugin support</flag>
-		<flag name="time">Enable additional features of the "Time" plugin</flag>
-		<flag name="twisted">Allows supybot to use <pkg>dev-python/twisted</pkg> as driver</flag>
 	</use>
 </pkgmetadata>
