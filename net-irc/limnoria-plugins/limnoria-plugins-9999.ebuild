@@ -3,7 +3,7 @@
 # $Header: $
 
 EAPI="5"
-PYTHON_COMPAT=( python2_7 )
+PYTHON_COMPAT=( python{2_7,3_3,3_4} )
 
 inherit eutils python-r1 git-r3
 
@@ -21,17 +21,18 @@ SLOT="0"
 IUSE=""
 
 DEPEND=""
-RDEPEND="net-irc/Limnoria
+RDEPEND="|| (
+		net-irc/limnoria
+		net-irc/supybot
+	)
 	dev-python/chardet[${PYTHON_USEDEP}]
 	dev-python/django[${PYTHON_USEDEP}]
 	dev-python/lxml[${PYTHON_USEDEP}]
 	dev-python/beautifulsoup:4[${PYTHON_USEDEP}]
-	dev-python/python-twitter
+	dev-python/python-twitter[$(python_gen_usedep 'python2_7')]
 	dev-python/requests[${PYTHON_USEDEP}]
-	dev-python/pygraphviz
-	dev-python/oauth2[${PYTHON_USEDEP}]
-	>=dev-python/twisted-conch-8.1.0
-	>=dev-python/twisted-web-1.0"
+	dev-python/pygraphviz[$(python_gen_usedep 'python2_7')]
+	dev-python/oauth2[$(python_gen_usedep 'python2_7')]"
 
 src_unpack() {
 	git-r3_src_unpack
@@ -42,8 +43,14 @@ src_install() {
 		for plugin in *; do
 			[[ -d ${plugin} ]] || continue #skip over non-plugin files
 			case ${plugin} in
-				BadWords|Dunno|Success)
-					# These plugins are part of supybot-0.83.4 now, so skip them here.
+				Twitter|WebStats)
+					# These plugins only work in python 2
+					if [[ ${EPYTHON} == python3.* ]]; then
+						continue
+					fi
+					;;
+				MegaHAL|GUI)
+					# Omitted by maintainer decision
 					continue
 					;;
 				*)
@@ -57,8 +64,23 @@ src_install() {
 	python_foreach_impl installation || die "Plugin Installation failed"
 }
 
+python_test() {
+	SUPYBOT_TEST=`which supybot-test`
+	EXCLUDE_PLUGINS=( --exclude="./NoLatin1" ) # recommended by upstream
+	EXCLUDE_PLUGINS=( --exclude="./MegaHAL" --exclude="./GUI" ) # Omitted by maintainer decision
+	if [[ ${EPYTHON} == python3.* ]]; then
+		EXCLUDE_PLUGINS=( --exclude="./Twitter" ) # python-twitter and oauth2 are py2 only
+		EXCLUDE_PLUGINS=( --exclude="./WebStats" ) # pygraphviz is py2 only
+	fi
+
+	"${PYTHON}" "${SUPYBOT_TEST}" test --plugins-dir="." --no-network --disable-multiprocessing
+}
+
 pkg_postinst() {
 	python_mod_optimize supybot/plugins
+	ewarn "Many plugins require functionality that is only available for"
+	ewarn "net-irc/limnoria, so support for the use of this pkg with"
+	ewarn "net-irc/supybot will be limited."
 }
 
 pkg_postrm() {
