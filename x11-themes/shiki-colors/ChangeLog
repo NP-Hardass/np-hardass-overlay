@@ -1,6 +1,9 @@
 # ChangeLog for x11-themes/shiki-colors
-# Copyright 1999-2012 Gentoo Foundation; Distributed under the GPL v2
+# Copyright 1999-2015 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/x11-themes/shiki-colors/ChangeLog,v 1.4 2012/01/04 18:04:36 phajdan.jr Exp $
+
+  09 Feb 2015; NP-Hardass <np.hardass@gmail.com> shiki-colors-4.6-r2.ebuild:
+  Drop support for old window managers and update EAPI
 
   04 Jan 2012; Pawel Hajdan jr <phajdan.jr@gentoo.org> shiki-colors-4.6.ebuild:
   x86 stable wrt bug #394439
@@ -17,4 +20,3 @@
   14 Mar 2010; Pacho Ramos <pacho@gentoo.org> +shiki-colors-4.6.ebuild,
   +metadata.xml:
   Initial import of Shiki-Colors themes including a Gentoo one
-
