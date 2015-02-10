@@ -1,3 +1,7 @@
+  10 Feb 2015; NP-Hardass <np.hardass@gmail.com> limnoria-20150118.ebuild,
+  limnoria-99999999.ebuild:
+  Remove rss plugin in py3.3 due to breakage
+
 *Limnoria-20150118 (29 Jan 2015)
 *Limnoria-99999999 (29 Jan 2015)
 
