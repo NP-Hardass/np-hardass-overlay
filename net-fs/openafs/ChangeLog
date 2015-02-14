@@ -1,0 +1,10 @@
+*openafs-1.6.5-r2 (14 Feb 2015)
+*openafs-1.6.6-r1 (14 Feb 2015)
+
+  14 Feb 2015; NP-Hardass <np.hardass@gmail.com>
+  +files/openafs-1.6.5-fix-uidgid-strict-type-checks.patch,
+  +files/openafs-cve-2014-0159.patch, +files/openafs-cve-2014-2852.patch,
+  +metadata.xml, +openafs-1.6.5-r2.ebuild, +openafs-1.6.6-r1.ebuild,
+  -openafs-1.6.6.ebuild, openafs-1.6.10.ebuild, openafs-1.6.9.ebuild:
+  1.6.5: #497006; 1.6.5 and 1.6.6: #507420; 1.6.9 version bump; added missing
+  metadata.xml

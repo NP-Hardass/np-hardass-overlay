@@ -1,0 +1,314 @@
+--- a/src/afs/LINUX/osi_groups.c	2013-07-17 18:10:42.000000000 -0400
++++ b/src/afs/LINUX/osi_groups.c	2015-01-21 01:02:50.984791808 -0500
+@@ -37,8 +37,8 @@
+     if (group_info->ngroups < NUMPAGGROUPS)
+ 	return NOPAG;
+ 
+-    for (i = 0; (i < group_info->ngroups &&
+-		 (g0 = GROUP_AT(group_info, i)) != (gid_t) NOGROUP); i++) {
++    for (i = 0; i < group_info->ngroups; i++) {
++	g0 = afs_from_kgid(GROUP_AT(group_info, i));
+ 	if (((g0 >> 24) & 0xff) == 'A')
+ 	    return g0;
+     }
+@@ -51,6 +51,7 @@
+     int need_space = 0;
+     int i;
+     int j;
++    afs_kgid_t newkgid = afs_make_kgid(newpag);
+ 
+     if (afs_linux_pag_from_groups(old) == NOPAG)
+ 	need_space = NUMPAGGROUPS;
+@@ -58,19 +59,19 @@
+     *new = groups_alloc(old->ngroups + need_space);
+ 
+     for (i = 0, j = 0; i < old->ngroups; ++i) {
+-	int ths = GROUP_AT(old, i);
+-	int last = i > 0 ? GROUP_AT(old, i-1) : 0;
+-	if ((ths >> 24) == 'A')
++	afs_kgid_t ths = GROUP_AT(old, i);
++	if ((afs_from_kgid(ths) >> 24) == 'A')
+ 	    continue;
+-	if (last <= newpag && ths > newpag) {
+-	   GROUP_AT(*new, j) = newpag;
++	if ((i == 0 || !gid_lt(newkgid, GROUP_AT(old, i-1))) &&
++	    gid_lt(newkgid, ths)) {
++	   GROUP_AT(*new, j) = newkgid;
+ 	   j++;
+ 	}
+ 	GROUP_AT(*new, j) = ths;
+ 	j++;
+     }
+     if (j != i + need_space)
+-        GROUP_AT(*new, j) = newpag;
++        GROUP_AT(*new, j) = newlgid;
+ }
+ 
+ #else
+@@ -190,7 +191,7 @@
+ 	/* if we're root, don't count the keyring against our quota. This
+ 	 * avoids starvation issues when dealing with PAM modules that always
+ 	 * setpag() as root */
+-	if (current_uid() == 0)
++	if (capable(CAP_SYS_ADMIN))
+ 	    flags = KEY_ALLOC_NOT_IN_QUOTA;
+ 	else
+ 	    flags = KEY_ALLOC_IN_QUOTA;
+@@ -250,7 +251,7 @@
+ 	    perm = KEY_POS_VIEW | KEY_POS_SEARCH;
+ 	    perm |= KEY_USR_VIEW | KEY_USR_SEARCH;
+ 
+-	    key = afs_linux_key_alloc(&key_type_afs_pag, "_pag", 0, 0, perm, KEY_ALLOC_NOT_IN_QUOTA);
++	    key = afs_linux_key_alloc(&key_type_afs_pag, "_pag", GLOBAL_ROOT_UID, GLOBAL_ROOT_GID, perm, KEY_ALLOC_NOT_IN_QUOTA);
+ 
+ 	    if (!IS_ERR(key)) {
+ 		key_instantiate_and_link(key, (void *) newpag, sizeof(afs_uint32),
+@@ -461,7 +462,7 @@
+     int code;
+     afs_uint32 *userpag, pag = NOPAG;
+ 
+-    if (key->uid != 0 || key->gid != 0)
++    if (!uid_eq(key->uid, GLOBAL_ROOT_UID) || !gid_eq(key->gid, GLOBAL_ROOT_GID))
+ 	return -EPERM;
+ 
+     code = -EINVAL;
+@@ -592,7 +593,7 @@
+ 	key = afs_linux_search_keyring(cred, &key_type_afs_pag);
+ 
+ 	if (!IS_ERR(key)) {
+-	    if (key_validate(key) == 0 && key->uid == 0) {      /* also verify in the session keyring? */
++	    if (key_validate(key) == 0 && uid_eq(key->uid, GLOBAL_ROOT_UID)) {      /* also verify in the session keyring? */
+ 		keyring_pag = key->payload.value;
+ 		/* Only set PAG in groups if needed,
+ 		 * and the creds are from the current process */
+--- a/src/afs/LINUX/osi_compat.h	2013-07-17 18:10:42.000000000 -0400
++++ b/src/afs/LINUX/osi_compat.h	2015-01-21 01:35:26.519802548 -0500
+@@ -173,8 +173,8 @@
+ 
+ #ifdef LINUX_KEYRING_SUPPORT
+ static inline struct key *
+-afs_linux_key_alloc(struct key_type *type, const char *desc, uid_t uid,
+-		    gid_t gid, key_perm_t perm, unsigned long flags)
++afs_linux_key_alloc(struct key_type *type, const char *desc, afs_kuid_t uid,
++		    afs_kgid_t gid, key_perm_t perm, unsigned long flags)
+ {
+ # if defined(KEY_ALLOC_NEEDS_STRUCT_TASK)
+     return key_alloc(type, desc, uid, gid, current, perm, flags);
+--- a/src/afs/LINUX/osi_cred.c	2013-07-17 18:10:42.000000000 -0400
++++ b/src/afs/LINUX/osi_cred.c	2015-01-21 00:54:57.853789210 -0500
+@@ -21,10 +21,18 @@
+ /* Copy one credential structure to another, being careful about references */
+ static inline void
+ afs_copy_creds(cred_t *to_cred, const cred_t *from_cred) {
++#if defined(STRUCT_TASK_STRUCT_HAS_CRED)
++    /* Skip afs_from_kuid/afs_make_kuid round trip */
++    to_cred->fsuid = from_cred->fsuid;
++    to_cred->fsgid = from_cred->fsgid;
++    to_cred->uid = from_cred->uid;
++    to_cred->gid = from_cred->gid;
++#else
+     afs_set_cr_uid(to_cred, afs_cr_uid(from_cred));
+     afs_set_cr_gid(to_cred, afs_cr_gid(from_cred));
+     afs_set_cr_ruid(to_cred, afs_cr_ruid(from_cred));
+     afs_set_cr_rgid(to_cred, afs_cr_rgid(from_cred));
++#endif
+     get_group_info(afs_cr_group_info(from_cred));
+     afs_set_cr_group_info(to_cred, afs_cr_group_info(from_cred));
+ }
+--- a/src/afs/LINUX/osi_machdep.h	2013-07-17 18:10:42.000000000 -0400
++++ b/src/afs/LINUX/osi_machdep.h	2015-01-21 01:16:15.026796224 -0500
+@@ -143,33 +143,76 @@
+ 
+ typedef struct task_struct afs_proc_t;
+ 
++#ifdef HAVE_LINUX_KUID_T
++
++typedef kuid_t afs_kuid_t;
++typedef kgid_t afs_kgid_t;
++extern struct user_namespace *afs_ns;
++# ifdef CONFIG_USER_NS
++#  define afs_current_user_ns() current_user_ns()
++# else
++/* Here current_user_ns() expands to GPL-only init_user_ns symbol! */
++#  define afs_current_user_ns() ((struct user_namespace *)NULL)
++# endif
++
++static inline kuid_t afs_make_kuid(uid_t uid) {
++    return make_kuid(afs_ns, uid);
++}
++static inline kgid_t afs_make_kgid(gid_t gid) {
++    return make_kgid(afs_ns, gid);
++}
++static inline kuid_t afs_from_kuid(uid_t uid) {
++    return from_kuid(afs_ns, uid);
++}
++static inline kgid_t afs_from_kgid(gid_t gid) {
++    return from_kgid(afs_ns, gid);
++}
++
++#else
++
++typedef uid_t afs_kuid_t;
++typedef gid_t afs_kgid_t;
++
++static inline afs_kuid_t afs_make_kuid(uid_t uid) {return uid;}
++static inline afs_kgid_t afs_make_kgid(gid_t gid) {return gid;}
++static inline uid_t afs_from_kuid(afs_kuid_t kuid) {return kuid;}
++static inline gid_t afs_from_kgid(afs_kgid_t kgid) {return kgid;}
++static inline bool uid_eq(uid_t a, uid_t b) {return a == b;}
++static inline bool gid_eq(gid_t a, gid_t b) {return a == b;}
++static inline bool uid_lt(uid_t a, uid_t b) {return a < b;}
++static inline bool gid_lt(gid_t a, gid_t b) {return a < b;}
++#define GLOBAL_ROOT_UID ((afs_kuid_t) 0)
++#define GLOBAL_ROOT_GID ((afs_kgid_t) 0)
++
++#endif
++
+ /* Credentials.  For newer kernels we use the kernel structure directly. */
+ #if defined(STRUCT_TASK_STRUCT_HAS_CRED)
+ 
+ typedef struct cred afs_ucred_t;
+ typedef struct cred cred_t;
+ 
+-# define afs_cr_uid(cred) ((cred)->fsuid)
+-# define afs_cr_gid(cred) ((cred)->fsgid)
+-# define afs_cr_ruid(cred) ((cred)->uid)
+-# define afs_cr_rgid(cred) ((cred)->gid)
++# define afs_cr_uid(cred) (afs_from_kuid((cred)->fsuid))
++# define afs_cr_gid(cred) (afs_from_kgid((cred)->fsgid))
++# define afs_cr_ruid(cred) (afs_from_kuid((cred)->uid))
++# define afs_cr_rgid(cred) (afs_from_kgid((cred)->gid))
+ # define afs_cr_group_info(cred) ((cred)->group_info)
+ # define crhold(c) (get_cred(c))
+ static inline void
+ afs_set_cr_uid(cred_t *cred, uid_t uid) {
+-    cred->fsuid = uid;
++    cred->fsuid = afs_make_kuid(uid);
+ }
+ static inline void
+ afs_set_cr_gid(cred_t *cred, gid_t gid) {
+-    cred->fsgid = gid;
++    cred->fsgid = afs_make_kgid(gid);
+ }
+ static inline void
+ afs_set_cr_ruid(cred_t *cred, uid_t uid) {
+-    cred->uid = uid;
++    cred->uid = afs_make_kuid(uid);
+ }
+ static inline void
+ afs_set_cr_rgid(cred_t *cred, gid_t gid) {
+-    cred->gid = gid;
++    cred->gid = afs_make_kgid(gid);
+ }
+ static inline void
+ afs_set_cr_group_info(cred_t *cred, struct group_info *group_info) {
+--- a/src/afs/LINUX/osi_module.c	2013-07-17 18:10:42.000000000 -0400
++++ b/src/afs/LINUX/osi_module.c	2015-01-21 01:20:12.668797529 -0500
+@@ -42,12 +42,20 @@
+ #endif
+ int afs_global_owner = 0;
+ 
++#ifdef HAVE_LINUX_KUID_T
++struct user_namespace *afs_ns;
++#endif
++
+ int __init
+ afs_init(void)
+ {
+     int err;
+     AFS_RWLOCK_INIT(&afs_xosi, "afs_xosi");
+ 
++#ifdef HAVE_LINUX_KUID_T
++    afs_ns = afs_current_user_ns();
++#endif
++
+     osi_Init();
+ #if !defined(AFS_NONFSTRANS)
+     osi_linux_nfssrv_init();
+--- a/src/afs/LINUX/osi_pag_module.c	2013-07-17 18:10:42.000000000 -0400
++++ b/src/afs/LINUX/osi_pag_module.c	2015-01-21 01:23:51.873798733 -0500
+@@ -54,6 +54,10 @@
+ struct proc_dir_entry *openafs_procfs;
+ int afs_global_owner = 0;
+ 
++#ifdef HAVE_LINUX_KUID_T
++struct user_namespace *afs_ns;
++#endif
++
+ int __init
+ afspag_init(void)
+ {
+@@ -62,6 +66,10 @@
+ #endif
+     int err;
+ 
++#ifdef HAVE_LINUX_KUID_T
++    afs_ns = afs_current_user_ns();
++#endif
++
+     osi_Init();
+ 
+     err = osi_syscall_init();
+--- a/src/afs/LINUX/osi_vnodeops.c	2013-07-17 18:10:42.000000000 -0400
++++ b/src/afs/LINUX/osi_vnodeops.c	2015-01-21 01:26:54.765799737 -0500
+@@ -966,9 +966,9 @@
+     if (iattrp->ia_valid & ATTR_MODE)
+ 	vattrp->va_mode = iattrp->ia_mode;
+     if (iattrp->ia_valid & ATTR_UID)
+-	vattrp->va_uid = iattrp->ia_uid;
++	vattrp->va_uid = afs_from_kuid(iattrp->ia_uid);
+     if (iattrp->ia_valid & ATTR_GID)
+-	vattrp->va_gid = iattrp->ia_gid;
++	vattrp->va_gid = afs_from_kgid(iattrp->ia_gid);
+     if (iattrp->ia_valid & ATTR_SIZE)
+ 	vattrp->va_size = iattrp->ia_size;
+     if (iattrp->ia_valid & ATTR_ATIME) {
+@@ -1006,8 +1006,8 @@
+ #endif
+     ip->i_rdev = vp->va_rdev;
+     ip->i_mode = vp->va_mode;
+-    ip->i_uid = vp->va_uid;
+-    ip->i_gid = vp->va_gid;
++    ip->i_uid = afs_make_kuid(vp->va_uid);
++    ip->i_gid = afs_make_kgid(vp->va_gid);
+     i_size_write(ip, vp->va_size);
+     ip->i_atime.tv_sec = vp->va_atime.tv_sec;
+     ip->i_atime.tv_nsec = 0;
+--- a/src/cf/linux-test4.m4	2015-01-21 01:37:36.467803262 -0500
++++ b/src/cf/linux-test4.m4	2015-01-21 01:38:05.359803420 -0500
+@@ -353,7 +353,8 @@
+ 			[#include <linux/rwsem.h>
+ 			#include <linux/key.h> ],
+ 			[struct task_struct *t=NULL;
+-			(void) key_alloc(NULL, NULL, 0, 0, t, 0, 0);],
++			struct key k = {};
++			(void) key_alloc(NULL, NULL, k.uid, k.gid, t, 0, 0);],
+ 			[KEY_ALLOC_NEEDS_STRUCT_TASK],
+ 			[define if key_alloc takes a struct task *],
+ 			[-Werror -Wno-pointer-arith])
+@@ -366,13 +367,13 @@
+ 			[#include <linux/rwsem.h>
+ 			#include <linux/key.h>],
+ 			[struct cred *c = NULL;
+-			(void) key_alloc(NULL, NULL, 0, 0, c, 0, 0);],
++			struct key k = {};
++			(void) key_alloc(NULL, NULL, k.uid, k.gid, c, 0, 0);],
+ 			[KEY_ALLOC_NEEDS_CRED],
+ 			[define if key_alloc takes credentials],
+ 			[-Werror -Wno-pointer-arith])
+ ])
+ 
+-
+ AC_DEFUN([LINUX_INIT_WORK_HAS_DATA], [
+   AC_CHECK_LINUX_BUILD([whether INIT_WORK has a _data argument],
+ 		       [ac_cv_linux_init_work_has_data],
+--- a/acinclude.m4	2015-01-21 00:37:52.215783577 -0500
++++ b/acinclude.m4	2015-01-21 01:36:30.227802898 -0500
+@@ -811,6 +811,7 @@
+ 
+ 		 dnl Type existence checks
+ 		 AC_CHECK_LINUX_TYPE([struct vfs_path], [dcache.h])
++		 AC_CHECK_LINUX_TYPE([kuid_t], [uidgid.h])
+ 
+ 		 dnl Check for structure elements
+ 		 AC_CHECK_LINUX_STRUCT([address_space_operations],

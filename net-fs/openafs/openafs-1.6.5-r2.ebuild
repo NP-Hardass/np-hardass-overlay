@@ -4,7 +4,7 @@
 
 EAPI="4"
 
-inherit flag-o-matic eutils autotools multilib toolchain-funcs versionator pam systemd
+inherit flag-o-matic eutils autotools multilib toolchain-funcs versionator pam
 
 MY_PV=$(delete_version_separator '_')
 MY_P="${PN}-${MY_PV}"
@@ -18,8 +18,7 @@ SRC_URI="http://openafs.org/dl/openafs/${MY_PV}/${MY_P}-src.tar.bz2
 
 LICENSE="IBM BSD openafs-krb5-a APSL-2"
 SLOT="0"
-KEYWORDS="~amd64 ~sparc ~x86 ~amd64-fbsd ~x86-fbsd ~amd64-linux ~x86-linux"
-
+KEYWORDS="~amd64 ~sparc ~x86 ~amd64-linux ~x86-linux"
 IUSE="doc kerberos pam"
 
 RDEPEND="~net-fs/openafs-kernel-${PV}
@@ -30,9 +29,11 @@ RDEPEND="~net-fs/openafs-kernel-${PV}
 S="${WORKDIR}/${MY_P}"
 
 src_prepare() {
-	EPATCH_EXCLUDE="020_all_fbsd.patch" \
 	EPATCH_SUFFIX="patch" \
 	epatch "${WORKDIR}"/gentoo/patches
+	epatch "${FILESDIR}/openafs-1.6.5-fix-uidgid-strict-type-checks.patch"
+	epatch "${FILESDIR}/openafs-cve-2014-0159.patch"
+#	epatch "${FILESDIR}/openafs-cve-2014-2852.patch" Needs additonal patches from upstream to apply
 	epatch_user
 
 	# packaging is f-ed up, so we can't run eautoreconf
@@ -115,9 +116,6 @@ src_install() {
 	newconfd "${CONFDIR}"/openafs-client openafs-client || die
 	newinitd "${SCRIPTDIR}"/openafs-server openafs-server || die
 	newconfd "${CONFDIR}"/openafs-server openafs-server || die
-	systemd_dotmpfilesd "${FILESDIR}"/tmpfiles.d/openafs-client.conf
-	systemd_dounit "${FILESDIR}"/openafs-client.service
-	systemd_dounit "${FILESDIR}"/openafs-server.service
 
 	# used directories: client
 	keepdir /etc/openafs
