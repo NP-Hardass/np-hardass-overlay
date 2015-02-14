@@ -56,7 +56,7 @@ src_unpack() {
 src_install() {
 	# This plugin fails testing using latest feedparser, despite feedparser's feedparser-5.1.3-backport_fix_for_chardet-py3.patch
 	if [[ ${EPYTHON} == python3.3 ]]; then
-		rm -rf ${BUILD_DIR}/lib/supbot/plugins/RSS
+		rm -rf "${BUILD_DIR}/lib/supbot/plugins/RSS"
 	fi
 	distutils-r1_src_install
 	doman man/* || die "doman failed"
