@@ -8,20 +8,22 @@ inherit eutils games java-pkg-2
 DESCRIPTION="A Minecraft launcher. Customize parameters, easily
 load/unload mods, manage multiple MC versions"
 HOMEPAGE="http://www.magiclauncher.com"
-SRC_URI="http://www.magiclauncher.com/download.php?f=MagicLauncher-1.0.0.jar -> $P.jar"
+SRC_URI="http://www.magiclauncher.com/download.php?f=MagicLauncher_${PV}.jar -> $P.jar"
 LICENSE="as-is"
 SLOT="0"
 KEYWORDS="~amd64"
 IUSE=""
 RESTRICT="mirror"
 
-DEPEND="virtual/jdk:1.6"
+DEPEND=""
 
 RDEPEND="games-action/minecraft
-	|| ( dev-java/icedtea-bin:6[X]
-		dev-java/icedtea:6
-		dev-java/sun-jre-bin:1.6[X]
-		dev-java/sun-jdk:1.6[X] )"
+	|| ( 
+		>=dev-java/icedtea-6[X]
+		>=dev-java/icedtea-bin-6[X]
+		>=dev-java/oracle-jre-bin-1.6[X]
+		>=dev-java/oracle-jre-bin-1.6[X]
+	)"
 
 S="${WORKDIR}"
 
