@@ -1,0 +1,6 @@
+*openafs-kernel-1.6.11_pre1 (23 Feb 2015)
+*openafs-kernel-1.6.11_pre2 (23 Feb 2015)
+
+  23 Feb 2015; NP-Hardass <np.hardass@gmail.com>
+  +openafs-kernel-1.6.11_pre1.ebuild, +openafs-kernel-1.6.11_pre2.ebuild:
+  vbump to 1.6.11_pre1 and _pre2.  Ebuild now supports "_pre" natively.
