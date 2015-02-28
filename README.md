@@ -62,6 +62,7 @@ Then you can add this overlay with:
 	layman -o https://raw.githubusercontent.com/NP-Hardass/np-hardass-overlay/master/overlays.xml -f -a np-hardass-overlay
 
 Or the easier to type:
+
 	layman -o https://git.io/xnmB -f -a np-hardas-overlay
 
 To sync the overlay via layman:
