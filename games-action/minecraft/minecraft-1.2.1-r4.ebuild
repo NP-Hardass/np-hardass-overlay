@@ -10,7 +10,7 @@ inherit eutils python-r1 games java-pkg-2
 DESCRIPTION="A game about placing blocks while running from skeletons. Or something like that..."
 HOMEPAGE="http://www.minecraft.net"
 SRC_URI="https://s3.amazonaws.com/Minecraft.Download/launcher/Minecraft.jar -> $P.jar"
-LICENSE="Minecraft"
+LICENSE="Minecraft-EULA"
 SLOT="0"
 KEYWORDS="~amd64"
 IUSE=""
