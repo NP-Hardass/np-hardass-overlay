@@ -53,20 +53,23 @@ src_unpack() {
 	fi
 }
 
-src_install() {
-	# This plugin fails testing using latest feedparser, despite feedparser's feedparser-5.1.3-backport_fix_for_chardet-py3.patch
-	if [[ ${EPYTHON} == python3.3 ]]; then
-		rm -rf "${BUILD_DIR}/lib/supbot/plugins/RSS"
+python_prepare(){
+	if python_is_python3; then
+		ewarn "Removing the RSS plugin because of clashes between libxml2's Python3"
+		ewarn "bindings and feedparser."
+		rm -rf "plugins/RSS"
 	fi
+}
+
+src_install() {
 	distutils-r1_src_install
 	doman man/* || die "doman failed"
 }
 
 python_test() {
 	PLUGINS_DIR="${BUILD_DIR}/lib/supybot/plugins"
-	EXCLUDE_PLUGINS=( --exclude="${PLUGINS_DIR}/Scheduler" ) # recommended by upstream
-	EXCLUDE_PLUGINS+=( --exclude="${PLUGINS_DIR}/Filter" ) # recommended by upstream
-	EXCLUDE_PLUGINS+=( --exclude="${PLUGINS_DIR}/Unix" ) # We seem to have sandbox issues with this one
+	EXCLUDE_PLUGINS=( --exclude="${PLUGINS_DIR}/Scheduler" ) # recommended by upstream, unknown random failure
+	EXCLUDE_PLUGINS+=( --exclude="${PLUGINS_DIR}/Filter" ) # recommended by upstream, unknown random failure
 	"${PYTHON}" ./scripts/supybot-test test --plugins-dir="${PLUGINS_DIR}" --no-network --disable-multiprocessing "${EXCLUDE_PLUGINS[@]}"
 }
 
