@@ -61,9 +61,8 @@ python_prepare(){
 	fi
 }
 
-src_install() {
-	distutils-r1_src_install
-	doman man/* || die "doman failed"
+python_install_all() {
+	doman man/*
 }
 
 python_test() {
