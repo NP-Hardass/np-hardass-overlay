@@ -32,5 +32,7 @@ if [[ -f "${gjl_pwd}/server.properties" ]]; then
 			fi
 		fi
 	done
+else
+	echo "eula=true" > "${gjl_pwd}/eula.txt"
 fi
 

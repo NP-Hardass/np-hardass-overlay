@@ -1,6 +1,9 @@
 # ChangeLog for games-server/minecraft-server
-# Copyright 1999-2013 Gentoo Foundation; Distributed under the GPL v2
+# Copyright 1999-2015 Gentoo Foundation; Distributed under the GPL v2
 # $Header: $
+
+  02 Mar 2015; NP-Hardass <np.hardass@gmail.com> files/directory.sh:
+  Bypass EULA check because the ebuild already enforces the EULA
 
 *minecraft-server-1.4.7 (27 Jan 2013)
 
