@@ -1,6 +1,6 @@
 # ChangeLog for app-arch/engrampa
 # Copyright 1999-2015 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo-x86/app-arch/engrampa/ChangeLog,v 1.7 2014/12/09 22:35:42 tamiko Exp $
+# $Header: $
 
   09 Feb 2015; NP-Hardass <np.hardass@gmail.com> engrampa-1.8.1-r1.ebuild:
   Drop support for old mate 1.6

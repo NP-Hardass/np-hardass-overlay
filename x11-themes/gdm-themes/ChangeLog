@@ -1,6 +1,6 @@
 # ChangeLog for x11-themes/gdm-themes
 # Copyright 1999-2015 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo-x86/x11-themes/gdm-themes/ChangeLog,v 1.43 2013/02/07 22:48:03 ulm Exp $
+# $Header: $
 
   04 Feb 2015; NP-Hardass <np.hardass@gmail.com> gdm-themes-20070811-r1.ebuild:
   Drop keywords and update EAPI

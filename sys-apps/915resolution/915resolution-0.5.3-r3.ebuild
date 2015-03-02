@@ -1,6 +1,6 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/sys-apps/915resolution/Attic/915resolution-0.5.3-r3.ebuild,v 1.2 2012/12/25 13:14:26 pacho dead $
+# $Header: $
 
 inherit eutils flag-o-matic
 

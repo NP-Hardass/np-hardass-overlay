@@ -1,6 +1,6 @@
 # Copyright 1999-2013 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/net-fs/openafs-kernel/openafs-kernel-1.6.5-r2.ebuild,v 1.2 2013/10/15 19:11:13 hasufell Exp $
+# $Header: $
 
 EAPI="5"
 

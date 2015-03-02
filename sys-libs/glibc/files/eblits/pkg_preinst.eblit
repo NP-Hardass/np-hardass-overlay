@@ -1,6 +1,6 @@
 # Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/sys-libs/glibc/files/eblits/pkg_preinst.eblit,v 1.12 2014/06/14 23:29:04 vapier Exp $
+# $Header: $
 
 # Simple test to make sure our new glibc isnt completely broken.
 # Make sure we don't test with statically built binaries since

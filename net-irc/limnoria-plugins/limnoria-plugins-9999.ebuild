@@ -5,7 +5,7 @@
 EAPI="5"
 PYTHON_COMPAT=( python{2_7,3_3,3_4} )
 
-inherit eutils python-r1 git-r3
+inherit python-r1 git-r3
 
 MY_PN="Supybot-plugins"
 
@@ -34,6 +34,11 @@ RDEPEND="|| (
 	dev-python/pygraphviz[$(python_gen_usedep 'python2_7')]
 	dev-python/oauth2[$(python_gen_usedep 'python2_7')]"
 
+pkg_setup() {
+	git-r3_pkg_setup
+	python_setup
+}
+
 src_unpack() {
 	git-r3_src_unpack
 }
@@ -45,7 +50,7 @@ src_install() {
 			case ${plugin} in
 				Twitter|WebStats)
 					# These plugins only work in python 2
-					if [[ ${EPYTHON} == python3.* ]]; then
+					if python_is_python3; then
 						continue
 					fi
 					;;
@@ -67,13 +72,17 @@ src_install() {
 python_test() {
 	SUPYBOT_TEST=`which supybot-test`
 	EXCLUDE_PLUGINS=( --exclude="./NoLatin1" ) # recommended by upstream
-	EXCLUDE_PLUGINS=( --exclude="./MegaHAL" --exclude="./GUI" ) # Omitted by maintainer decision
-	if [[ ${EPYTHON} == python3.* ]]; then
-		EXCLUDE_PLUGINS=( --exclude="./Twitter" ) # python-twitter and oauth2 are py2 only
-		EXCLUDE_PLUGINS=( --exclude="./WebStats" ) # pygraphviz is py2 only
+	EXCLUDE_PLUGINS+=( --exclude="./MegaHAL" --exclude="./GUI" ) # Omitted by maintainer decision
+	if python_is_python3; then
+		EXCLUDE_PLUGINS+=( --exclude="./Twitter" ) # python-twitter and oauth2 are py2 only
+		EXCLUDE_PLUGINS+=( --exclude="./WebStats" ) # pygraphviz is py2 only
 	fi
-
+	PYTHONPATH="${PYTHONPATH}:."
 	"${PYTHON}" "${SUPYBOT_TEST}" test --plugins-dir="." --no-network --disable-multiprocessing
+}
+
+src_test() {
+	python_foreach_impl python_test || die "Testing failed"
 }
 
 pkg_postinst() {

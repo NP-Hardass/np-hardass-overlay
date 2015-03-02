@@ -1,6 +1,6 @@
 # Copyright 1999-2013 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/sys-libs/glibc/files/eblits/src_test.eblit,v 1.5 2013/04/11 20:42:56 vapier Exp $
+# $Header: $
 
 toolchain-glibc_src_test() {
 	cd "${WORKDIR}"/build-${ABI}-${CTARGET}-$1 || die "cd build-${ABI}-${CTARGET}-$1"

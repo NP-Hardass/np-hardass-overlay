@@ -1,6 +1,6 @@
 # Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/sys-libs/glibc/files/eblits/src_compile.eblit,v 1.38 2014/03/29 05:31:59 vapier Exp $
+# $Header: $
 
 glibc_do_configure() {
 	local myconf=()
