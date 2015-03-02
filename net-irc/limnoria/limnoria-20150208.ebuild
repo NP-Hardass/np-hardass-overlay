@@ -54,6 +54,7 @@ src_unpack() {
 }
 
 python_prepare(){
+	distutils-r1_python_prepare
 	if python_is_python3; then
 		ewarn "Removing the RSS plugin because of clashes between libxml2's Python3"
 		ewarn "bindings and feedparser."
@@ -62,6 +63,7 @@ python_prepare(){
 }
 
 python_install_all() {
+	distutils-r1_python_install_all
 	doman man/*
 }
 
