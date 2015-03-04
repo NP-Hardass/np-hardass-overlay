@@ -71,18 +71,22 @@ python_test() {
 	PLUGINS_DIR="${BUILD_DIR}/lib/supybot/plugins"
 	EXCLUDE_PLUGINS=( --exclude="${PLUGINS_DIR}/Scheduler" ) # recommended by upstream, unknown random failure
 	EXCLUDE_PLUGINS+=( --exclude="${PLUGINS_DIR}/Filter" ) # recommended by upstream, unknown random failure
-	"${PYTHON}" ./scripts/supybot-test test --plugins-dir="${PLUGINS_DIR}" --no-network --disable-multiprocessing "${EXCLUDE_PLUGINS[@]}"
-	einfo "The Unix plugin has been known to fail the 'ping' tests with:"
-	einfo " 'ERROR: ld.so: object 'libsandbox.so' from LD_PRELOAD cannot be"
-	einfo "  preloaded (cannot open shared object file)'"
-	einfo "Re-emerging sys-apps/sandbox has been known to resolve this failure to"
-	einfo "run the 'ping' test in portage's sandbox"
+	"${PYTHON}" ./scripts/supybot-test test --plugins-dir="${PLUGINS_DIR}" --no-network \
+		--disable-multiprocessing "${EXCLUDE_PLUGINS[@]}" || {
+		einfo "The Unix plugin has been known to fail the 'ping' tests with:"
+		einfo " 'ERROR: ld.so: object 'libsandbox.so' from LD_PRELOAD cannot be"
+		einfo "  preloaded (cannot open shared object file)'"
+		einfo "Re-emerging sys-apps/sandbox has been known to resolve this failure to"
+		einfo "run the 'ping' test in portage's sandbox"
+		die "Tests failed under ${EPYTHON}"
+	}
 }
 
 pkg_postinst() {
 	elog "Complete user documentation is available at https://limnoria-doc.readthedocs.org/"
 	elog ""
 	elog "Use supybot-wizard to create a configuration file."
+	elog "Run supybot </path/to/config> to use the bot."
 	elog ""
 	elog "There are additional plugins available in net-im/limnoria-plugins"
 	elog ""

@@ -1,5 +1,9 @@
   04 Mar 2015; NP-Hardass <np.hardass@gmail.com> limnoria-20150208.ebuild,
   limnoria-99999999.ebuild:
+  Exit test phase properly and add instruction on how to use the bot
+
+  04 Mar 2015; NP-Hardass <np.hardass@gmail.com> limnoria-20150208.ebuild,
+  limnoria-99999999.ebuild:
   Restrict mock requirement for testing to Python2.7
 
 *limnoria-20150208 (02 Mar 2015)
