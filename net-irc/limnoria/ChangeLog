@@ -1,4 +1,8 @@
   04 Mar 2015; NP-Hardass <np.hardass@gmail.com> limnoria-20150208.ebuild,
+  limnoria-99999999.ebuild, metadata.xml:
+  Package made it into the main Gentoo tree. Syncing with that version.
+
+  04 Mar 2015; NP-Hardass <np.hardass@gmail.com> limnoria-20150208.ebuild,
   limnoria-99999999.ebuild:
   Minor stylistic changes
 

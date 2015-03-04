@@ -1,6 +1,6 @@
 # Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: $
+# $Header: /var/cvsroot/gentoo-x86/net-irc/limnoria/limnoria-20150208.ebuild,v 1.1 2015/03/04 09:13:38 idella4 Exp $
 
 EAPI="5"
 PYTHON_COMPAT=( python{2_7,3_3,3_4} )
@@ -41,9 +41,7 @@ RDEPEND="
 	!net-irc/supybot-plugins
 	"
 DEPEND="${RDEPEND}
-	$(python_gen_cond_dep 'dev-python/mock[${PYTHON_USEDEP}]' python2_7)"
-
-DOCS="ACKS RELNOTES ChangeLog README.md"
+	test? ( $(python_gen_cond_dep 'dev-python/mock[${PYTHON_USEDEP}]' python2_7) )"
 
 src_unpack() {
 	if [[ ${PV} == "99999999" ]]; then
