@@ -41,7 +41,7 @@ RDEPEND="
 	!net-irc/supybot-plugins
 	"
 DEPEND="${RDEPEND}
-	test? ( dev-python/mock[${PYTHON_USEDEP}] )"
+	$(python_gen_cond_dep 'dev-python/mock[${PYTHON_USEDEP}]' python2_7)"
 
 DOCS="ACKS RELNOTES ChangeLog README.md"
 
