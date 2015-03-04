@@ -56,9 +56,9 @@ src_unpack() {
 python_prepare(){
 	distutils-r1_python_prepare
 	if python_is_python3; then
-		ewarn "Removing the RSS plugin because of clashes between libxml2's Python3"
-		ewarn "bindings and feedparser."
-		rm -rf "plugins/RSS"
+		einfo "Removing the RSS plugin because of clashes between libxml2's Python3"
+		einfo "bindings and feedparser."
+		rm -rf "plugins/RSS" || die
 	fi
 }
 
@@ -68,7 +68,7 @@ python_install_all() {
 }
 
 python_test() {
-	cd "${T}"
+	pushd "${T}" > /dev/null
 	PLUGINS_DIR="${BUILD_DIR}/lib/supybot/plugins"
 	# recommended by upstream, unknown random failure
 	EXCLUDE_PLUGINS=( --exclude="${PLUGINS_DIR}/Scheduler" )
@@ -81,6 +81,7 @@ python_test() {
 		--plugins-dir="${PLUGINS_DIR}" --no-network \
 		--disable-multiprocessing "${EXCLUDE_PLUGINS[@]}" \
 		|| die "Tests failed under ${EPYTHON}"
+	popd > /dev/null
 }
 
 pkg_postinst() {

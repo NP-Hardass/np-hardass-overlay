@@ -1,5 +1,9 @@
   04 Mar 2015; NP-Hardass <np.hardass@gmail.com> limnoria-20150208.ebuild,
   limnoria-99999999.ebuild:
+  Minor stylistic changes
+
+  04 Mar 2015; NP-Hardass <np.hardass@gmail.com> limnoria-20150208.ebuild,
+  limnoria-99999999.ebuild:
   Remove Unix plugin, expand test phase comments, use temp directory to run
   tests, and clean up code
 
