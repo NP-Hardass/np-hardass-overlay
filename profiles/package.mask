@@ -7,3 +7,8 @@
 =app-emulation/wine-1.7.33-r6
 =app-emulation/wine-1.7.34-r2
 =app-emulation/wine-9999-r1
+
+# NP-Hardass <np.hardass@gmail.com> (5 Mar 2015)
+# Masked to make deal with issues with repoman checks
+# Feel free to unmask at your leisure.
+games-roguelike/dwarf-fortress
