@@ -9,7 +9,7 @@ DESCRIPTION="A Minecraft launcher. Customize parameters, easily
 load/unload mods, manage multiple MC versions"
 HOMEPAGE="http://www.magiclauncher.com"
 SRC_URI="http://www.magiclauncher.com/download.php?f=MagicLauncher_${PV}.jar -> $P.jar"
-LICENSE="as-is"
+LICENSE="MagicLauncher"
 SLOT="0"
 KEYWORDS="~amd64"
 IUSE=""
