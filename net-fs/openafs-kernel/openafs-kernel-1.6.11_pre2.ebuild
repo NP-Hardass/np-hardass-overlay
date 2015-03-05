@@ -64,10 +64,17 @@ src_prepare() {
 }
 
 src_configure() {
+	local myconf=""
+	# OpenAFS 1.6.11 has a bug with kernels 3.17-3.17.2 that requires a config option
+	if use linux_kernel && kernel_is -ge 3 17 && kernel_is -le 3 17 2; then
+		myconf="--enable-linux-d_splice_alias-extra-iput"
+	fi
+
 	ARCH="$(tc-arch-kernel)" \
 	econf \
 		--with-linux-kernel-headers=${KV_DIR} \
-		--with-linux-kernel-build=${KV_OUT_DIR}
+		--with-linux-kernel-build=${KV_OUT_DIR} \
+		${myconf}
 }
 
 src_compile() {

@@ -1,3 +1,10 @@
+*openafs-kernel-1.6.11 (05 Mar 2015)
+
+  05 Mar 2015; NP-Hardass <np.hardass@gmail.com> +openafs-kernel-1.6.11.ebuild,
+  openafs-kernel-1.6.11_pre1.ebuild, openafs-kernel-1.6.11_pre2.ebuild:
+  Version bump to 1.6.11.  Release notes:
+  http://openafs.org/dl/openafs/1.6.11/RELNOTES-1.6.11
+
 *openafs-kernel-1.6.11_pre1 (23 Feb 2015)
 *openafs-kernel-1.6.11_pre2 (23 Feb 2015)
 
