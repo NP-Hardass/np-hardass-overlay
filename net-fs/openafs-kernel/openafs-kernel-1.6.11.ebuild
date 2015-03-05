@@ -9,7 +9,7 @@ inherit autotools eutils multilib linux-mod versionator toolchain-funcs
 MY_PV=$(delete_version_separator '_')
 MY_P="${PN/-kernel}-${MY_PV}"
 PVER="1"
-GENTOO_PATCHES="${PN/-kernel}-1.6.5-patches-${PVER}.tar.bz2"
+GENTOO_PATCHES="${P/-kernel}-patches-${PVER}.tar.bz2"
 DESCRIPTION="The OpenAFS distributed file system kernel module"
 HOMEPAGE="http://www.openafs.org/"
 # We always d/l the doc tarball as man pages are not USE=doc material

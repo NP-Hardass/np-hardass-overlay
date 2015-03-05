@@ -1,3 +1,7 @@
+  05 Mar 2015; NP-Hardass <np.hardass@gmail.com> openafs-kernel-1.6.11.ebuild,
+  openafs-kernel-1.6.11_pre1.ebuild, openafs-kernel-1.6.11_pre2.ebuild:
+  Remove temporary hardcoded patch tarball paths
+
 *openafs-kernel-1.6.11 (05 Mar 2015)
 
   05 Mar 2015; NP-Hardass <np.hardass@gmail.com> +openafs-kernel-1.6.11.ebuild,
