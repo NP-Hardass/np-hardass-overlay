@@ -41,6 +41,21 @@ ERROR_KEYS="OpenAFS needs CONFIG_KEYS option enabled"
 QA_TEXTRELS_x86_fbsd="/boot/modules/libafs.ko"
 QA_TEXTRELS_amd64_fbsd="/boot/modules/libafs.ko"
 
+pkg_pretend() {
+	if use kernel_linux && kernel_is ge 4 ; then
+		ewarn "Gentoo supports kernels which are supported by OpenAFS"
+		ewarn "which are limited to the following kernel versions:"
+		ewarn "<sys-kernel/gentoo-sources-4.0"
+		ewarn "<sys-kernel/vanilla-sources-4.0"
+		ewarn ""
+		ewarn "You are free to utilize epatch_user to provide whatever"
+		ewarn "support you feel is appropriate, but will not receive"
+		ewarn "support as a result of those changes."
+		ewarn ""
+		ewarn "Please do not file a bug report about this."
+	fi
+}
+
 pkg_setup() {
 	if use kernel_linux; then
 		linux-mod_pkg_setup
