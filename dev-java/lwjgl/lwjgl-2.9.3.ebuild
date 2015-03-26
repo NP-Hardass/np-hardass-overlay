@@ -20,7 +20,7 @@ IUSE="egl"
 
 CDEPEND="dev-java/apple-java-extensions-bin:0
 	dev-java/apt-mirror:0
-	dev-java/asm:4
+	dev-java/asm:3.999
 	dev-java/jinput:0
 	x11-libs/libX11
 	x11-libs/libXcursor

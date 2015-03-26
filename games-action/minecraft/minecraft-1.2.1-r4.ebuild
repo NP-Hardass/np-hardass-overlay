@@ -29,7 +29,7 @@ RDEPEND="|| (
 
 	dev-java/gson:2.2.2
 	dev-java/java-config:2
-	>=dev-java/jopt-simple-4.5:4.5
+	>=dev-java/jopt-simple-4.5:0
 
 	>=dev-java/bcprov-1.47:0
 	>=dev-java/commons-io-2.4:1
