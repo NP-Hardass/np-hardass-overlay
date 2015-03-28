@@ -18,7 +18,7 @@ SRC_URI="http://www.highpoint-tech.com/BIOS_Driver/${MOD}/linux/${A_DIR}-${DATE}
 
 RESTRICT="mirror"
 
-LICENSE=""
+LICENSE="all-rights-reserved highpoint-rr"
 SLOT="0"
 KEYWORDS="~x86 ~amd64"
 IUSE=""

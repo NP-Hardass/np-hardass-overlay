@@ -20,7 +20,7 @@ SRC_URI="https://help.ubuntu.com/community/RocketRaid?action=AttachFile&do=get&t
 
 RESTRICT="mirror"
 
-LICENSE=""
+LICENSE="all-rights-reserved highpoint-rr"
 SLOT="0"
 KEYWORDS="~x86 ~amd64"
 IUSE=""
