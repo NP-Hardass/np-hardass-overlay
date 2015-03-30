@@ -1,6 +1,6 @@
 # Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/net-irc/limnoria/limnoria-20150208.ebuild,v 1.1 2015/03/04 09:13:38 idella4 Exp $
+# $Header: /var/cvsroot/gentoo-x86/net-irc/limnoria/limnoria-99999999.ebuild,v 1.1 2015/03/04 09:13:38 idella4 Exp $
 
 EAPI="5"
 PYTHON_COMPAT=( python{2_7,3_3,3_4} )
@@ -26,7 +26,7 @@ DESCRIPTION="Python based extensible IRC infobot and channel bot"
 HOMEPAGE="http://supybot.aperio.fr/"
 LICENSE="BSD"
 SLOT="0"
-IUSE="crypt test"
+IUSE="crypt ssl test"
 
 RDEPEND="
 	dev-python/charade[${PYTHON_USEDEP}]
@@ -37,6 +37,7 @@ RDEPEND="
 	dev-python/socksipy[${PYTHON_USEDEP}]
 	dev-python/sqlalchemy[${PYTHON_USEDEP}]
 	crypt? ( dev-python/python-gnupg[${PYTHON_USEDEP}] )
+	ssl? ( dev-python/pyopenssl[${PYTHON_USEDEP}] )
 	!net-irc/supybot
 	!net-irc/supybot-plugins
 	"
@@ -75,7 +76,7 @@ python_test() {
 	# intermittent failure due to issues loading libsandbox.so from LD_PRELOAD
 	# runs successfully when running the tests on the installed system
 	EXCLUDE_PLUGINS+=( --exclude="${PLUGINS_DIR}/Unix" )
-	"${PYTHON}" "${BUILD_DIR}"/scripts/supybot-test \
+	"${PYTHON}" "${BUILD_DIR}"/scripts/supybot-test "${BUILD_DIR}/../test" \
 		--plugins-dir="${PLUGINS_DIR}" --no-network \
 		--disable-multiprocessing "${EXCLUDE_PLUGINS[@]}" \
 		|| die "Tests failed under ${EPYTHON}"
@@ -87,7 +88,4 @@ pkg_postinst() {
 	elog ""
 	elog "Use supybot-wizard to create a configuration file."
 	elog "Run supybot </path/to/config> to use the bot."
-	elog ""
-	elog "There are additional plugins available in net-im/limnoria-plugins"
-	elog ""
 }

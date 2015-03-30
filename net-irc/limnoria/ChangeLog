@@ -1,3 +1,9 @@
+*limnoria-20150318 (30 Mar 2015)
+
+  30 Mar 2015; NP-Hardass <np.hardass@gmail.com> +limnoria-20150318.ebuild,
+  -limnoria-20150208.ebuild, limnoria-99999999.ebuild:
+  Version bump to 20150318 and add support for SSL
+
   04 Mar 2015; NP-Hardass <np.hardass@gmail.com> limnoria-20150208.ebuild,
   limnoria-99999999.ebuild, metadata.xml:
   Package made it into the main Gentoo tree. Syncing with that version.

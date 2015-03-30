@@ -26,7 +26,7 @@ DESCRIPTION="Python based extensible IRC infobot and channel bot"
 HOMEPAGE="http://supybot.aperio.fr/"
 LICENSE="BSD"
 SLOT="0"
-IUSE="crypt test"
+IUSE="crypt ssl test"
 
 RDEPEND="
 	dev-python/charade[${PYTHON_USEDEP}]
@@ -37,6 +37,7 @@ RDEPEND="
 	dev-python/socksipy[${PYTHON_USEDEP}]
 	dev-python/sqlalchemy[${PYTHON_USEDEP}]
 	crypt? ( dev-python/python-gnupg[${PYTHON_USEDEP}] )
+	ssl? ( dev-python/pyopenssl[${PYTHON_USEDEP}] )
 	!net-irc/supybot
 	!net-irc/supybot-plugins
 	"
@@ -87,7 +88,4 @@ pkg_postinst() {
 	elog ""
 	elog "Use supybot-wizard to create a configuration file."
 	elog "Run supybot </path/to/config> to use the bot."
-	elog ""
-	elog "There are additional plugins available in net-im/limnoria-plugins"
-	elog ""
 }
