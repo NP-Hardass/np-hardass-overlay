@@ -42,7 +42,7 @@ RDEPEND="
 	!net-irc/supybot-plugins
 	"
 DEPEND="${RDEPEND}
-	test? ( $(python_gen_cond_dep 'dev-python/mock[${PYTHON_USEDEP}]' python2_7) )"
+	test? ( dev-python/mock[${PYTHON_USEDEP}] )"
 
 src_unpack() {
 	if [[ ${PV} == "99999999" ]]; then

@@ -1,3 +1,8 @@
+  30 Mar 2015; NP-Hardass <np.hardass@gmail.com> limnoria-20150318.ebuild,
+  limnoria-99999999.ebuild:
+  Temporarily set mock dependency to be unconditional for testing since upstream
+  doesn't detect when internal vs external mock should be used
+
 *limnoria-20150318 (30 Mar 2015)
 
   30 Mar 2015; NP-Hardass <np.hardass@gmail.com> +limnoria-20150318.ebuild,
