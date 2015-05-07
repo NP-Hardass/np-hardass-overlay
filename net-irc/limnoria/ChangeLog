@@ -1,3 +1,10 @@
+*limnoria-20150429 (07 May 2015)
+
+  07 May 2015; NP-Hardass <np.hardass@gmail.com> +limnoria-20150429.ebuild,
+  -limnoria-20150318.ebuild, limnoria-99999999.ebuild:
+  Version bump limnoria to 20150429, drop old, use chardet instead of charade,
+  switch live branch to 'testing'
+
   30 Mar 2015; NP-Hardass <np.hardass@gmail.com> limnoria-20150318.ebuild,
   limnoria-99999999.ebuild:
   Temporarily set mock dependency to be unconditional for testing since upstream

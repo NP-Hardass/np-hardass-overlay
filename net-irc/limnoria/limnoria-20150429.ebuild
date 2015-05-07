@@ -13,7 +13,7 @@ MY_P="${MY_PN}-${MY_PV}"
 
 if [[ ${PV} == "99999999" ]]; then
 	EGIT_REPO_URI="git://github.com/ProgVal/Limnoria.git"
-	EGIT_BRANCH="master"
+	EGIT_BRANCH="testing"
 	inherit git-r3
 	SRC_URI=""
 else
@@ -29,7 +29,7 @@ SLOT="0"
 IUSE="crypt ssl test"
 
 RDEPEND="
-	dev-python/charade[${PYTHON_USEDEP}]
+	dev-python/chardet[${PYTHON_USEDEP}]
 	dev-python/ecdsa[${PYTHON_USEDEP}]
 	dev-python/feedparser[${PYTHON_USEDEP}]
 	dev-python/python-dateutil[${PYTHON_USEDEP}]
