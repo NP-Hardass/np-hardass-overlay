@@ -4,7 +4,7 @@
 	<longdescription lang="en">
 		Python modules for shortening and lengthening URLs via various online services
 	</longdescription>
-	<maintainer>
+	<maintainer type="person">
 		<email>np.hardass@gmail.com</email>
 		<name>NP-Hardass</name>
 	</maintainer>

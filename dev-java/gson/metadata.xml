@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
-<herd>java</herd>
+<maintainer type="project">
+	<email>java@gentoo.org</email>
+	<name>Java</name>
+</maintainer>
 <longdescription lang="en">
 Gson is a Java library that can be used to convert Java Objects into
 their JSON representation. It can also be used to convert a JSON
@@ -10,4 +13,3 @@ objects including pre-existing objects that you do not have
 source-code of.
 </longdescription>
 </pkgmetadata>
-

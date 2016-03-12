@@ -4,7 +4,7 @@
 	<longdescription lang="en">
 		Kernel module for Highpoint RocketRaid 62x raid cards
 	</longdescription>
-	<maintainer>
+	<maintainer type="person">
 		<email>np.hardass@gmail.com</email>
 		<name>NP-Hardass</name>
 	</maintainer>
