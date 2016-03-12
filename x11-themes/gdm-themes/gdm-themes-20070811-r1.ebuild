@@ -74,7 +74,7 @@ DEPEND="app-arch/unzip"
 SLOT="0"
 LICENSE="CC-BY-NC-ND-2.0 CC-BY-2.0 GPL-2
 LGPL-2.1 public-domain"
-KEYWORDS="amd64 x86"
+KEYWORDS="~amd64 ~x86"
 IUSE=""
 
 src_unpack() {
