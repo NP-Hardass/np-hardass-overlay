@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=OpenVPN GUI
+Comment=GTK Tray for OpenVPN
+Icon=/usr/share/gopenvpn/gopenvpn-open.png
+Exec=gopenvpn
+NoDisplay=false
+Categories=Network;RemoteAccess;
+StartupNotify=false
+Terminal=false

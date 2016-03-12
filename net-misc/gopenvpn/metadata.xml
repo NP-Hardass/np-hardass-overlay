@@ -5,7 +5,7 @@
 		This GTK GUI and tray icon provide an easy way to manage OpenVPN
 		connections.
 	</longdescription>
-	<maintainer>
+	<maintainer type="person">
 		<email>np.hardass@gmail.com</email>
 		<name>NP-Hardass</name>
 	</maintainer>

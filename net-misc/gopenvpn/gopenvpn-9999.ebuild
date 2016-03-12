@@ -1,6 +1,6 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: $
+# $Id$
 
 EAPI=5
 
@@ -38,4 +38,10 @@ src_prepare(){
 
 		eautoreconf
 		eautoconf
+}
+
+src_install() {
+	domenu "${FILESDIR}/gopenvpn.desktop"
+
+	default
 }
