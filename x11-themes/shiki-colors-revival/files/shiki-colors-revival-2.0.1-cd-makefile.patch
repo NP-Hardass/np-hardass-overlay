@@ -1,0 +1,11 @@
+--- Makefile	2015-08-06 18:24:51.000000000 -0400
++++ Makefile.new	2016-03-11 21:13:33.664345475 -0500
+@@ -81,7 +81,7 @@
+ prepare:
+ 	[[ "$(no_git)" ]] || git submodule init
+ 	[[ "$(no_git)" ]] || git submodule update
+-	cd $(BASE) && rm -rf xfwm4 metacity-1 openbox-3 xfce-notify-4.0 index.theme
++	rm -rf $(BASE)/{xfwm4,metacity-1,openbox-3,xfce-notify-4.0,index.theme}
+ 
+ Shiki-%:
+ 	@echo "Generating $@ from $(BASE)..."
