@@ -39,7 +39,7 @@ src_prepare() {
 	echo '#!/bin/sh' >"${installScriptNew}"
 
 	echo "ppd_file_name=${PPD_PATH}/${PRINTER_MODEL}.ppd" >>"${installScriptNew}"
-	sed -n '/cat <<ENDOFPPDFILE1/,/ENDOFPPDFILE1/p' "${INSTALL_SCRIPT}" >>"${installScriptNew}" || die "Creating PPD file failed"
+	sed -n '/cat <<ENDOFPPDFILE/,/ENDOFPPDFILE/p' "${INSTALL_SCRIPT}" >>"${installScriptNew}" || die "Creating PPD file failed"
 
 	echo "brotherlpdwrapper=${FILTER_PATH}/brlpdwrapper${PRINTER_MODEL}" >>"${installScriptNew}"
 	sed -n '/cat <<!ENDOFWFILTER!/,/!ENDOFWFILTER!/p' "${INSTALL_SCRIPT}" >>"${installScriptNew}" || die "Creating filter wrapper failed"
