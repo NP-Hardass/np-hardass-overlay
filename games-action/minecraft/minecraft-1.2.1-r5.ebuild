@@ -1,4 +1,4 @@
-# Copyright 1999-2016 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
@@ -10,7 +10,7 @@ inherit eutils python-r1 games java-pkg-2
 DESCRIPTION="A game about placing blocks while running from skeletons. Or something like that..."
 HOMEPAGE="http://www.minecraft.net"
 SRC_URI="https://s3.amazonaws.com/Minecraft.Download/launcher/Minecraft.jar -> $P.jar"
-LICENSE="Minecraft-EULA"
+LICENSE="Minecraft"
 SLOT="0"
 KEYWORDS="~amd64"
 IUSE=""
@@ -19,17 +19,10 @@ RESTRICT="mirror"
 DEPEND="app-arch/zip
 	>=virtual/jdk-1.6"
 
-RDEPEND="|| (
-	>=dev-java/icedtea-6[X]
-	>=dev-java/icedtea-bin-6[X]
-	>=dev-java/oracle-jre-bin-1.6[X]
-	>=dev-java/oracle-jdk-bin-1.6[X]
-	>=dev-java/sun-jre-bin-1.6[X]
-	>=dev-java/sun-jdk-1.6[X] )
-
-	dev-java/gson:2.2.2
+RDEPEND="dev-java/gson:2.2.2
 	dev-java/java-config:2
 	>=dev-java/jopt-simple-4.5:0
+	>=virtual/jre-1.6
 
 	>=dev-java/bcprov-1.47:0
 	>=dev-java/commons-io-2.4:1
