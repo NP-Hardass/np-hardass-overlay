@@ -8,7 +8,7 @@ inherit games java-pkg-2
 DESCRIPTION="Official dedicated server for Minecraft"
 HOMEPAGE="http://www.minecraft.net"
 SRC_URI="https://s3.amazonaws.com/Minecraft.Download/versions/${PV}/${PN/-/_}.${PV}.jar -> ${P}.jar"
-LICENSE="Minecraft-EULA"
+LICENSE="Minecraft"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE="ipv6"
