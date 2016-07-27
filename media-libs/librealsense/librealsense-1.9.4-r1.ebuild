@@ -67,8 +67,8 @@ src_install() {
 		insinto /usr/share/${PF}/examples/src
 		doins examples/*
 		insinto /usr/share/${PF}/examples/bin
+		insopts -m755
 		doins bin/*
-		fperms +x /usr/share/${PF}/examples/bin/*
 	fi
 }
 
