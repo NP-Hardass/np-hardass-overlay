@@ -47,7 +47,7 @@ src_compile() {
 	if use examples; then
 		emake
 	else
-		emake library
+		emake lib/librealsense.so
 	fi
 }
 
