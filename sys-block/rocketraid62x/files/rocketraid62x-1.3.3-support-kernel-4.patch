@@ -1,0 +1,16 @@
+--- a/inc/linux/Makefile.def	2016-08-20 22:08:54.804683621 -0400
++++ b/inc/linux/Makefile.def	2016-08-20 22:11:51.344687571 -0400
+@@ -89,10 +89,12 @@
+ $(error Cannot find kernel version. Check $(KERNELDIR)/include/linux/version.h.)
+ endif
+ 
++ifneq ($(MAJOR), 4)
+ ifneq ($(MAJOR), 3)
+ ifneq ($(KERNEL_VER), 2.6)
+ ifneq ($(KERNEL_VER), 2.4)
+-$(error Only kernel 2.4/2.6/3.x is supported but you use $(KERNEL_VER))
++$(error Only kernel 2.4/2.6/3.x/4.x is supported but you use $(KERNEL_VER))
++endif
+ endif
+ endif
+ endif

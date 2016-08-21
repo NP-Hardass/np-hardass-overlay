@@ -2,9 +2,9 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
-EAPI=5
+EAPI=6
 
-inherit linux-mod
+inherit linux-mod flag-o-matic
 
 DESCRIPTION="Kernel module for Highpoint RocketRaid 62x raid cards"
 HOMEPAGE="http://www.highpoint-tech.com/USA_new/series_rr600-overview.htm"
@@ -26,6 +26,8 @@ KEYWORDS="~x86 ~amd64"
 IUSE=""
 
 S="${WORKDIR}/${A_DIR}"
+
+PATCHES=( "${FILESDIR}/${P}-support-kernel-4.patch" )
 
 pkg_pretend() {
 	if kernel_is gt 3 10 5; then
@@ -54,5 +56,8 @@ src_prepare() {
 	sed -i -e "s/MAJOR :=.*/MAJOR := ${KV_MAJOR}/g" inc/linux/Makefile.def || die "sed failed"
 	sed -i -e "s/MINOR :=.*/MINOR := ${KV_MINOR}/g" inc/linux/Makefile.def || die "sed failed"
 
-	epatch_user
+	#Fix -Werror=date-time
+	sed -i 's/ (" __DATE__ " " __TIME__ ")//' product/rr62x/linux/config.c || die "sed failed"
+
+	default
 }
