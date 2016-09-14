@@ -27,7 +27,7 @@ index 34a1863..bd79321 100644
 -    code, result = _send_signed_request(CA + "/acme/new-reg", {
 +    payload = {
          "resource": "new-reg",
-         "agreement": "https://letsencrypt.org/documents/LE-SA-v1.0.1-July-27-2015.pdf",
+         "agreement": "https://letsencrypt.org/documents/LE-SA-v1.1.1-August-1-2016.pdf",
 -    })
 +    }
 +    if account_email:
@@ -40,7 +40,7 @@ index 34a1863..bd79321 100644
      parser.add_argument("--acme-dir", required=True, help="path to the .well-known/acme-challenge/ directory")
      parser.add_argument("--quiet", action="store_const", const=logging.ERROR, help="suppress output except for errors")
      parser.add_argument("--ca", default=DEFAULT_CA, help="certificate authority, default is Let's Encrypt")
-+    parser.add_argument("--account_email", help="contact e-mail address")
++    parser.add_argument("--account-email", help="contact e-mail address")
  
      args = parser.parse_args(argv)
      LOGGER.setLevel(args.quiet or LOGGER.level)
@@ -90,8 +90,8 @@ index cea57ee..930cd43 100644
      parser.add_argument("--acme-dir", required=True, help="path to the .well-known/acme-challenge/ directory")
      parser.add_argument("--quiet", action="store_const", const=logging.ERROR, help="suppress output except for errors")
      parser.add_argument("--ca", default=DEFAULT_CA, help="certificate authority, default is Let's Encrypt")
--    parser.add_argument("--account_email", help="contact e-mail address")
-+    parser.add_argument("--account_email", help="set contact e-mail address, leave empty to keep current")
+-    parser.add_argument("--account-email", help="contact e-mail address")
++    parser.add_argument("--account-email", help="set contact e-mail address, leave empty to keep current")
  
      args = parser.parse_args(argv)
      LOGGER.setLevel(args.quiet or LOGGER.level)

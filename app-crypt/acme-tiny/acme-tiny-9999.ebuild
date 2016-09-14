@@ -23,11 +23,8 @@ DEPEND="dev-libs/openssl:0
 	dev-python/setuptools_scm[${PYTHON_USEDEP}]"
 RDEPEND="${DEPEND}"
 
-src_prepare() {
-	PATCHES=(
-		"${FILESDIR}"/PR50-setup.py.patch
-		"${FILESDIR}"/PR87-readmefix.patch
-		"${FILESDIR}"/PR101-contactinfo.patch
-	)
-	default
-}
+PATCHES=(
+	"${FILESDIR}/${PN}-PR50-setup.py.patch"
+	"${FILESDIR}/${PN}-PR87-readmefix.patch"
+	"${FILESDIR}/${PN}-PR101-contactinfo.patch"
+)
