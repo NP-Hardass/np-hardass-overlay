@@ -1,8 +1,0 @@
-  09 Feb 2015; NP-Hardass <np.hardass@gmail.com> limnoria-plugins-9999.ebuild:
-  Update PYTHON_COMPAT, remove broken plugins, add testing
-
-*supybot-plugins-9999 (27 Jan 2015)
-
-  27 Jan 2015; NP-Hardass <np.hardass@gmail.com> +metadata.xml,
-  +supybot-plugins-9999.ebuild:
-  Initial commit of new plugins
