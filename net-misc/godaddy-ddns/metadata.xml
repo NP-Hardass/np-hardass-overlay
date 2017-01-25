@@ -8,4 +8,7 @@
 	<longdescription lang="en">
 		A script for dynamically updating a GoDaddy DNS record.
 	</longdescription>
+	<upstream>
+		<remote-id type="github">CarlEdman/godaddy-ddns</remote-id>
+	</upstream>
 </pkgmetadata>
