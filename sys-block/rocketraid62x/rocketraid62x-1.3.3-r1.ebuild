@@ -1,4 +1,4 @@
-# Copyright 1999-2016 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
@@ -27,7 +27,7 @@ IUSE=""
 
 S="${WORKDIR}/${A_DIR}"
 
-PATCHES=( "${FILESDIR}/${P}-support-kernel-4.patch" )
+PATCHES=( "${FILESDIR}/${P}-support-kernel-4-Makefile.patch" )
 
 pkg_pretend() {
 	if kernel_is gt 3 10 5; then
