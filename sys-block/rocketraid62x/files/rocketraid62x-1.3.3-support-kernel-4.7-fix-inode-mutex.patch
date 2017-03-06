@@ -1,0 +1,26 @@
+Add support for kernel 4.7
+Inodes have their own locking function now rather than maintaining a mutex
+to be manually operated on
+
+--- a/osm/linux/os_linux.c	2017-03-06 07:14:19.897941188 -0500
++++ b/osm/linux/os_linux.c	2017-03-06 07:15:39.660942596 -0500
+@@ -368,13 +368,17 @@
+ 							if (vbus_ext->sd_flags[id] & SD_FLAG_REVALIDATE) {
+ 								if (bdev->bd_disk->fops->revalidate_disk)
+ 									bdev->bd_disk->fops->revalidate_disk(bdev->bd_disk);
+-#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,15)
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(4,7,0)
++								inode_lock(bdev->bd_inode);
++#elif LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,15)
+ 								mutex_lock(&bdev->bd_inode->i_mutex);
+ #else 
+ 								down(&bdev->bd_inode->i_sem);
+ #endif
+ 								i_size_write(bdev->bd_inode, (loff_t)get_capacity(bdev->bd_disk)<<9);
+-#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,15)
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(4,7,0)
++								inode_unlock(bdev->bd_inode);
++#elif LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,15)
+ 								mutex_unlock(&bdev->bd_inode->i_mutex);
+ #else 
+ 								up(&bdev->bd_inode->i_sem);
