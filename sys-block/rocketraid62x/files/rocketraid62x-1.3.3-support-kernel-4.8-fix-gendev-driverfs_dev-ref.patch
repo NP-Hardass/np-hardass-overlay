@@ -1,0 +1,16 @@
+Support kernels >= 4.8 since driverfs_dev was removed
+
+--- a/osm/linux/os_linux.c	2017-03-06 07:23:27.521950854 -0500
++++ b/osm/linux/os_linux.c	2017-03-10 22:37:45.280019653 -0500
+@@ -364,7 +364,11 @@
+ 						blkdev_get(bdev, FMODE_READ, 0 __BDEV_RAW)
+ #endif
+ 						==0) {
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(4,8,0)
++						if (bdev->bd_disk && ((disk_to_dev(bdev->bd_disk)->parent)==&SDptr->sdev_gendev)) {
++#else
+ 						if (bdev->bd_disk && bdev->bd_disk->driverfs_dev==&SDptr->sdev_gendev) {
++#endif
+ 							if (vbus_ext->sd_flags[id] & SD_FLAG_REVALIDATE) {
+ 								if (bdev->bd_disk->fops->revalidate_disk)
+ 									bdev->bd_disk->fops->revalidate_disk(bdev->bd_disk);
