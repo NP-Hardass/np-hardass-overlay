@@ -6,7 +6,8 @@
 		<name>NP-Hardass</name>
 	</maintainer>
 	<use>
-		<flag name="plgx">Build plugin as the KeePass PLGX format instead of DLLs</flag>
+		<flag name="plgx">Build plugin as the KeePass PLGX format instead of DLLs
+		This currently requires Xvfb support</flag>
 	</use>
 	<longdescription lang="en">
 		KeePass Entry Templates for custom gui displays of your entries
