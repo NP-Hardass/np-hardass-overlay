@@ -12,4 +12,7 @@
 	<longdescription lang="en">
 		KeePass Entry Templates for custom gui displays of your entries
 	</longdescription>
+	<upstream>
+		<remote-id type="github">mitchcapper/KPEntryTemplates</remote-id>
+	</upstream>
 </pkgmetadata>
