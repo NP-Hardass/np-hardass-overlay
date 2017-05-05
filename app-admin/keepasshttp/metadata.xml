@@ -12,4 +12,7 @@
 	<longdescription lang="en">
 		KeePass plugin to expose password entries securely (256bit AES/CBC) over HTTP
 	</longdescription>
+	<upstream>
+		<remote-id type="github">pfn/keepasshttp</remote-id>
+	</upstream>
 </pkgmetadata>
