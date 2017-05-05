@@ -1,10 +1,12 @@
 # Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Id$
 
 EAPI=6
 
-inherit dotnet
+VIRTUALX_REQUIRED="manual"
+inherit dotnet mono-env virtualx
+
+MY_PN="KeePassHttp"
 
 if [[ ${PV} == 9999 ]]; then
 	inherit git-r3
@@ -20,31 +22,48 @@ HOMEPAGE="https://github.com/pfn/keepasshttp"
 
 LICENSE="GPL-3"
 SLOT="0"
-IUSE=""
+IUSE="+plgx"
 
-DEPEND=">=app-admin/keepass-2.20"
+DEPEND="
+	plgx? ( ${VIRTUALX_DEPEND} )
+	>=app-admin/keepass-2.20"
 RDEPEND="${DEPEND}"
 
 pkg_setup() {
 	KPDIR="/usr/$(get_libdir)/keepass"
 	dotnet_pkg_setup
+	mono-env_pkg_setup
 }
 
 src_prepare() {
-	sed -i "s|<HintPath>C:.*|<HintPath>${KPDIR}/KeePass.exe</HintPath>|" KeePassHttp/KeePassHttp.csproj || die
+	# Fix HintPath
+	sed -i "s|<HintPath>C:.*|<HintPath>${KPDIR}/KeePass.exe</HintPath>|" \
+		${MY_PN}/${MY_PN}.csproj || die
+
+	# Remove prebuilt plgx
+	rm ${MY_PN}.plgx || die
+
 	default
 }
 
 src_compile() {
-	xbuild /p:Configuration="Release" /p:Platform="Any CPU" KeePassHttp.sln || die "Compilation failed"
+	if use plgx; then
+		virtx mono "${KPDIR}/KeePass.exe" --plgx-create ${MY_PN}
+	else
+		exbuild ${MY_PN}.sln
+	fi
 }
 
 src_install() {
-	fperms 644 KeePassHttp.plgx
-	insinto ${KPDIR}
-	doins KeePassHttp.plgx
+	insinto "${KPDIR}"
+
+	if use plgx; then
+		doins ${MY_PN}.plgx
+	else
+		doins ${MY_PN}/bin/Release/*
+	fi
 }
 
 pkg_postinst() {
-	elog "Restart KeePass to complete the installation."
+	elog "KeePass must be restarted to load the plugin."
 }

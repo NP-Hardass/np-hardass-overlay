@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
-<maintainer type="person">
-                <email>maksbotan@gentoo.org</email>
-                <name>Maxim Koltsov</name>
-</maintainer>
-<maintainer type="person">
-                <email>pastafariant@gmail.com</email>
-                <name>Dmitry Nikulin</name>
-</maintainer>
+	<maintainer type="person">
+		<email>NP-Hardass@gentoo.org</email>
+		<name>NP-Hardass</name>
+	</maintainer>
+	<use>
+		<flag name="plgx">Build plugin as the KeePass PLGX format instead of DLLs</flag>
+	</use>
+	<longdescription lang="en">
+		KeePass plugin to expose password entries securely (256bit AES/CBC) over HTTP
+	</longdescription>
 </pkgmetadata>
