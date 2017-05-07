@@ -40,9 +40,6 @@ src_prepare() {
 	sed -i "s|<HintPath>C:.*|<HintPath>${KPDIR}/KeePass.exe</HintPath>|" \
 		${MY_PN}/${MY_PN}.csproj || die
 
-	# Remove prebuilt plgx
-	rm ${MY_PN}.plgx || die
-
 	default
 }
 
