@@ -18,13 +18,11 @@ HOMEPAGE="https://github.com/IntelRealSense/librealsense"
 
 LICENSE="Apache-2.0"
 SLOT="0"
-IUSE="+examples +opengl"
-
-REQUIRED_USE="opengl? ( examples )"
+IUSE="+examples"
 
 RDEPEND="
 	virtual/libusb:1
-	opengl? ( =media-libs/glfw-3* )
+	examples? ( =media-libs/glfw-3* )
 "
 DEPEND="${RDEPEND}
 	sys-kernel/linux-headers
@@ -47,7 +45,6 @@ pkg_pretend() {
 src_configure() {
 	local mycmakeargs=(
 		-DBUILD_EXAMPLES=$(usex examples true false)
-		-DBUILD_GRAPHICAL_EXAMPLES=$(usex opengl true false)
 	)
 	cmake-utils_src_configure
 }
