@@ -8,7 +8,7 @@ inherit distutils-r1
 
 if [[ ${PV} == 9999 ]]; then
 	inherit git-r3
-	EGIT_REPO_URI="git://github.com/diafygi/${PN}.git"
+	EGIT_REPO_URI="https://github.com/diafygi/${PN}.git"
 	KEYWORDS=""
 else
 	HASH="daba51d37efd7c1f205f9da383b9b09968e30d29"
@@ -17,27 +17,16 @@ else
 	S="${WORKDIR}/${PN}-${HASH}"
 fi
 
-ACME_GENTOO_V="20170626"
-ACME_GENTOO="${PN}-gentoo-${ACME_GENTOO_V}"
-SRC_URI="${SRC_URI}
-	script? ( https://dev.gentoo.org/~np-hardass/distfiles/${PN}/${ACME_GENTOO}.tar.gz )"
-
 DESCRIPTION="A tiny, auditable script for Let's Encrypt's ACME Protocol"
 HOMEPAGE="https://github.com/diafygi/acme-tiny"
 
 LICENSE="MIT"
 SLOT="0"
 
-IUSE="minimal script"
+IUSE="minimal"
 
 DEPEND="dev-python/setuptools_scm[${PYTHON_USEDEP}]"
-RDEPEND="
-	script? (
-		net-misc/wget
-	)
-	dev-libs/openssl:0"
-
-REQUIRED_USE="minimal? ( !script )"
+RDEPEND="dev-libs/openssl:0"
 
 PATCHES=( "${FILESDIR}/${PN}-PR50-setup.py.patch" )
 
@@ -55,22 +44,4 @@ src_prepare() {
 		)
 	fi
 	distutils-r1_src_prepare
-}
-
-src_install() {
-	distutils-r1_src_install
-	if use script; then
-		exeinto /etc/cron.monthly
-		doexe "${WORKDIR}/${ACME_GENTOO}/acme-tiny-renew-certs"
-
-		insinto /etc/
-		doins "${WORKDIR}/${ACME_GENTOO}/acme-tiny.conf.sample"
-	fi
-}
-
-pkg_postinst() {
-	if use script; then
-		einfo "To use the cron script, cp /etc/acme-tiny.conf{.sample,}"
-		einfo "and customize the config to suite your machine"
-	fi
 }
