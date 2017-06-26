@@ -58,9 +58,10 @@ src_compile() {
 src_install() {
 	einstalldocs
 
-	#insinto /usr/$(get_libdir)
-	#doins lib/librealsense.so
 	dolib "${BUILD_DIR}"/librealsense.so*
+
+	insinto /usr/include/
+	doins -r include/librealsense
 
 	insinto /lib/udev/rules.d/
 	doins config/99-realsense-libusb.rules

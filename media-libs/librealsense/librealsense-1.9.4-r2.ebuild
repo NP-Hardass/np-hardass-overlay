@@ -1,4 +1,4 @@
-# Copyright 1999-2016 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -53,8 +53,10 @@ src_compile() {
 src_install() {
 	einstalldocs
 
-	insinto /usr/$(get_libdir)
-	doins lib/librealsense.so
+	dolib lib/librealsense.so
+
+	insinto /usr/include/
+	doins -r include/librealsense
 
 	insinto /lib/udev/rules.d/
 	doins config/99-realsense-libusb.rules
