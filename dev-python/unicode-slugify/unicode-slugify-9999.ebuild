@@ -15,7 +15,7 @@ else
 fi
 
 DESCRIPTION="A slug generator that turns strings into unicode slugs"
-HOMEPAGE="http://github.com/mozilla/unicode-slugify"
+HOMEPAGE="https://github.com/mozilla/unicode-slugify"
 
 LICENSE="BSD"
 SLOT="0"
