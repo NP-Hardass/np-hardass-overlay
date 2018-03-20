@@ -1,23 +1,21 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
 PYTHON_COMPAT=( python{2_7,3_4,3_5,3_6} )
-inherit distutils-r1
+inherit distutils-r1 eapi7-ver
 
-if [[ ${PV} == 99999999 ]]; then
+if [[ ${PV} == 9999 ]]; then
 	inherit git-r3
 	EGIT_REPO_URI="git://github.com/diafygi/${PN}.git"
 	KEYWORDS=""
 else
-	HASH="4ed13950c0a9cf61f1ca81ff1874cde1cf48ab32"
-	SRC_URI="https://github.com/diafygi/${PN}/archive/${HASH}.tar.gz -> ${P}.tar.gz"
+	SRC_URI="https://github.com/diafygi/${PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"
 	KEYWORDS="~amd64 ~x86"
-	S="${WORKDIR}/${PN}-${HASH}"
 fi
 
-ACME_GENTOO_V="20170626"
+ACME_GENTOO_V="20180320"
 ACME_GENTOO="${PN}-gentoo-${ACME_GENTOO_V}"
 SRC_URI="${SRC_URI}
 	script? ( https://dev.gentoo.org/~np-hardass/distfiles/${PN}/${ACME_GENTOO}.tar.gz )"
@@ -28,7 +26,7 @@ HOMEPAGE="https://github.com/diafygi/acme-tiny"
 LICENSE="MIT"
 SLOT="0"
 
-IUSE="minimal script"
+IUSE="script"
 
 DEPEND="dev-python/setuptools_scm[${PYTHON_USEDEP}]"
 RDEPEND="
@@ -37,30 +35,22 @@ RDEPEND="
 	)
 	dev-libs/openssl:0"
 
-REQUIRED_USE="minimal? ( !script )"
-
-PATCHES=( "${FILESDIR}/${PN}-PR50-setup.py.patch" )
-
 pkg_setup() {
-	if [[ ${PV} != 99999999 ]]; then
-		export SETUPTOOLS_SCM_PRETEND_VERSION="0.1.dev79+n${HASH:0:7}.d$(date +%Y%m%d)"
+	if [[ ${PV} != 9999 ]]; then
+		export SETUPTOOLS_SCM_PRETEND_VERSION="${PV}"
 	fi
 }
 
 src_unpack() {
-	if [[ ${PV} == 99999999 ]]; then
+	if [[ ${PV} == 9999 ]]; then
 		git-r3_src_unpack
 	fi
 	default
 }
 
 src_prepare() {
-	if ! use minimal; then
-		PATCHES+=(
-			"${FILESDIR}/${PN}-PR87-readmefix.patch"
-			"${FILESDIR}/${PN}-PR101-contactinfo.patch"
-		)
-	fi
+	sed -i 's|#!/usr/bin/sh|#!/bin/sh|g' README.md || die
+
 	distutils-r1_src_prepare
 }
 
@@ -76,6 +66,14 @@ src_install() {
 }
 
 pkg_postinst() {
+	for v in ${REPLACING_VERSIONS}; do
+		if ver_test "$v" "-lt" "4.0.3" || ver_test "$v" "-ge" "9999"; then
+			einfo "The --account-email flag has been changed to --contact and"
+			einfo "has different syntax."
+			einfo "Please update your scripts and/or configs accordingly"
+		fi
+	done
+
 	if use script; then
 		einfo "To use the cron script, cp /etc/acme-tiny.conf{.sample,}"
 		einfo "and customize the config to suite your machine"
