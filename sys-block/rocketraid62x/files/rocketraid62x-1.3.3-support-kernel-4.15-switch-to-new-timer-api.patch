@@ -1,0 +1,208 @@
+--- a/osm/linux/os_linux.c	2019-03-04 17:16:35.382920192 -0500
++++ b/osm/linux/os_linux.c	2019-03-04 17:16:35.336920192 -0500
+@@ -627,9 +627,15 @@
+ 	return ((PVBUS_EXT)osext)->host->host_no;
+ }
+ 
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4, 15, 0))
++static void os_timer_for_ldm(struct timer_list *t)
++{
++  PVBUS_EXT vbus_ext = from_timer(vbus_ext, t, timer);
++#else
+ static void os_timer_for_ldm(unsigned long data)
+ {
+ 	PVBUS_EXT vbus_ext = (PVBUS_EXT)data;
++#endif
+ 	unsigned long flags;
+ 
+ 	spin_lock_irqsave(vbus_ext->lock, flags);
+@@ -644,8 +650,12 @@
+ 	HPT_ASSERT(vbus_ext->ext_type==EXT_TYPE_VBUS);
+ 	
+ 	del_timer(&vbus_ext->timer);
+-	vbus_ext->timer.function = os_timer_for_ldm;
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4, 15, 0))
++  timer_setup(&vbus_ext->timer, os_timer_for_ldm, 0);
++#else
++  vbus_ext->timer.function = os_timer_for_ldm;
+ 	vbus_ext->timer.data = (unsigned long)vbus_ext;
++#endif
+ 	vbus_ext->timer.expires = jiffies + 1 + interval / (1000000/HZ);
+ 	add_timer(&vbus_ext->timer);
+ }
+--- a/osm/linux/osm_linux.h	2019-03-04 17:47:06.069828683 -0500
++++ b/osm/linux/osm_linux.h	2019-03-04 17:47:06.022828686 -0500
+@@ -300,3 +301,8 @@
+ int hpt_proc_get_info(struct Scsi_Host *host, char *buffer, char **start, off_t offset, int length);
+ 
+ #endif
++
++struct sem_timer {
++  struct semaphore sem;
++  struct timer_list timer;
++};
+--- a/osm/linux/osm_linux.c	2019-03-06 09:37:45.826859312 -0500
++++ b/osm/linux/osm_linux.c	2019-03-06 09:39:36.179845732 -0500
+@@ -319,7 +319,11 @@
+ 
+ 		spin_lock_init(&initlock);
+ 		vbus_ext->lock = &initlock;
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4, 15, 0))
++    timer_setup(&vbus_ext->timer, 0, 0);
++#else
+ 		init_timer(&vbus_ext->timer);
++#endif
+ 
+ 		for (hba = vbus_ext->hba_list; hba; hba = hba->next) {
+ 			if (!hba->ldm_adapter.him->initialize(hba->ldm_adapter.him_handle)) {
+@@ -1474,10 +1478,18 @@
+ 	up(sem);
+ }
+ 
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4, 15, 0))
++static void cmd_timeout_sem(struct timer_list *t)
++{
++  struct sem_timer *sem_timer = from_timer(sem_timer, t, timer);
++  up(&sem_timer->sem);
++}
++#else
+ static void cmd_timeout_sem(unsigned long data)
+ {
+ 	up((struct semaphore *)(HPT_UPTR)data);
+ }
++#endif
+ 
+ /*
+  * flush a vdev (without retry).
+@@ -1486,8 +1498,7 @@
+ {
+ 	PCOMMAND pCmd;
+ 	unsigned long flags, timeout;
+-	struct timer_list timer;
+-	struct semaphore sem;
++  struct sem_timer sem_timer;
+ 	int result = 0;
+ 	HPT_UINT count;
+ 
+@@ -1511,31 +1522,35 @@
+ 	pCmd->type = CMD_TYPE_FLUSH;
+ 	pCmd->flags.hard_flush = 1;
+ 	pCmd->target = vd;
+-	pCmd->priv2 = (HPT_UPTR)&sem;
++	pCmd->priv2 = (HPT_UPTR)&sem_timer.sem;
+ 	pCmd->done = hpt_flush_done;
+ 
+-	sema_init(&sem, 0);
++	sema_init(&sem_timer.sem, 0);
+ 	ldm_queue_cmd(pCmd);
+ 
+ wait:
+ 	spin_unlock_irqrestore(vbus_ext->lock, flags);
+ 
+-	if (down_trylock(&sem)) {
++	if (down_trylock(&sem_timer.sem)) {
+ 		timeout = jiffies + 20 * HZ;
+-		init_timer(&timer);
+-		timer.expires = timeout;
+-		timer.data = (HPT_UPTR)&sem;
+-		timer.function = cmd_timeout_sem;
+-		add_timer(&timer);
+-		if (down_interruptible(&sem))
+-			down(&sem);
+-		del_timer(&timer);
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4, 15, 0))
++    timer_setup(&sem_timer.timer, cmd_timeout_sem, 0);
++#else
++		init_timer(&sem_timer.timer);
++		sem_timer.timer.data = (HPT_UPTR)&sem_timer.sem;
++		sem_timer.timer.function = cmd_timeout_sem;
++#endif
++		sem_timer.timer.expires = timeout;
++		add_timer(&sem_timer.timer);
++		if (down_interruptible(&sem_timer.sem))
++			down(&sem_timer.sem);
++		del_timer(&sem_timer.timer);
+ 	}
+ 
+ 	spin_lock_irqsave(vbus_ext->lock, flags);
+ 
+ 	if (pCmd->Result==RETURN_PENDING) {
+-		sema_init(&sem, 0);
++		sema_init(&sem_timer.sem, 0);
+ 		ldm_reset_vbus(vd->vbus);
+ 		goto wait;
+ 	}
+@@ -1649,16 +1664,23 @@
+ 	arg->ioctl_cmnd = 0;
+ }
+ 
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4, 15, 0))
++static void hpt_ioctl_timeout(struct timer_list *t)
++{ 
++  struct sem_timer *sem_timer = from_timer(sem_timer, t, timer);
++  up(&sem_timer->sem);
++}
++#else
+ static void hpt_ioctl_timeout(unsigned long data)
+ {
+ 	up((struct semaphore *)data);
+ }
++#endif
+ 
+ void __hpt_do_ioctl(PVBUS_EXT vbus_ext, IOCTL_ARG *ioctl_args)
+ {
+ 	unsigned long flags, timeout;
+-	struct timer_list timer;
+-	struct semaphore sem;
++  struct sem_timer sem_timer;
+ 
+ 	if (vbus_ext->needs_refresh
+ #if LINUX_VERSION_CODE >= KERNEL_VERSION(2,5,0)
+@@ -1671,8 +1693,8 @@
+ 
+ 	ioctl_args->result = -1;
+ 	ioctl_args->done = hpt_ioctl_done;
+-	ioctl_args->ioctl_cmnd = &sem;
+-	sema_init(&sem, 0);
++	ioctl_args->ioctl_cmnd = &sem_timer.sem;
++	sema_init(&sem_timer.sem, 0);
+ 
+ 	spin_lock_irqsave(vbus_ext->lock, flags);
+ 	ldm_ioctl((PVBUS)vbus_ext->vbus, ioctl_args);
+@@ -1680,22 +1702,26 @@
+ wait:
+ 	spin_unlock_irqrestore(vbus_ext->lock, flags);
+ 
+-	if (down_trylock(&sem)) {
++	if (down_trylock(&sem_timer.sem)) {
+ 		timeout = jiffies + 20 * HZ;
+-		init_timer(&timer);
+-		timer.expires = timeout;
+-		timer.data = (HPT_UPTR)&sem;
+-		timer.function = hpt_ioctl_timeout;
+-		add_timer(&timer);
+-		if (down_interruptible(&sem))
+-			down(&sem);
+-		del_timer(&timer);
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4, 15, 0))
++    timer_setup(&sem_timer.timer, hpt_ioctl_timeout, 0);
++#else
++		init_timer(&sem_timer.timer);
++		sem_timer.timer.data = (HPT_UPTR)&sem_timer.sem;
++		sem_timer.timer.function = hpt_ioctl_timeout;
++#endif
++		sem_timer.timer.expires = timeout;
++		add_timer(&sem_timer.timer);
++		if (down_interruptible(&sem_timer.sem))
++			down(&sem_timer.sem);
++		del_timer(&sem_timer.timer);
+ 	}
+ 
+ 	spin_lock_irqsave(vbus_ext->lock, flags);
+ 
+ 	if (ioctl_args->ioctl_cmnd) {
+-		sema_init(&sem, 0);
++		sema_init(&sem_timer.sem, 0);
+ 		ldm_reset_vbus((PVBUS)vbus_ext->vbus);
+ 		__hpt_do_tasks(vbus_ext);
+ 		goto wait;

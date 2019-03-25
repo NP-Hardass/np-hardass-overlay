@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -21,7 +21,7 @@ RESTRICT="mirror"
 
 LICENSE="all-rights-reserved highpoint-rr"
 SLOT="0"
-KEYWORDS="~x86 ~amd64"
+KEYWORDS="~amd64 ~x86"
 IUSE=""
 
 S="${WORKDIR}/${A_DIR}"
@@ -30,13 +30,14 @@ PATCHES=(
 	"${FILESDIR}/${P}-support-kernel-4-Makefile.patch"
 	"${FILESDIR}/${P}-support-kernel-4.7-fix-inode-mutex.patch"
 	"${FILESDIR}/${P}-support-kernel-4.8-fix-gendev-driverfs_dev-ref.patch"
+	"${FILESDIR}/${P}-support-kernel-4.15-switch-to-new-timer-api.patch"
 )
 
 pkg_pretend() {
 	if kernel_is gt 3 10 5; then
 		ewarn "Upstream has only confirmed that this package compiles for kernel "
 		ewarn "versions up to 3.10.5.  That being said, package should compile"
-		ewarn "up to 4.8."
+		ewarn "up to 4.17."
 		ewarn ""
 		ewarn "You are free to utilize epatch_user to provide whatever"
 		ewarn "support you feel is appropriate, but you will not receive"
@@ -58,6 +59,8 @@ src_prepare() {
 	#Fix broken version detection
 	sed -i -e "s/MAJOR :=.*/MAJOR := ${KV_MAJOR}/g" inc/linux/Makefile.def || die "sed failed"
 	sed -i -e "s/MINOR :=.*/MINOR := ${KV_MINOR}/g" inc/linux/Makefile.def || die "sed failed"
+	#Fix includes
+	#sed -i -e "0,/HPT_ROOT/{s|HPT_ROOT :=.*|HPT_ROOT := ${S}|}" inc/linux/Makefile.def || die "sed failed"
 
 	#Fix -Werror=date-time
 	sed -i 's/ (" __DATE__ " " __TIME__ ")//' product/rr62x/linux/config.c || die "sed failed"
