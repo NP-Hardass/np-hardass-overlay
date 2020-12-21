@@ -1,0 +1,17 @@
+--- a/inc/linux/Makefile.def	2020-12-20 19:50:00.767183302 -0500
++++ b/inc/linux/Makefile.def	2020-12-20 19:51:10.845265762 -0500
+@@ -89,11 +89,13 @@
+ $(error Cannot find kernel version. Check $(KERNELDIR)/include/linux/version.h.)
+ endif
+ 
++ifneq ($(MAJOR), 5)
+ ifneq ($(MAJOR), 4)
+ ifneq ($(MAJOR), 3)
+ ifneq ($(KERNEL_VER), 2.6)
+ ifneq ($(KERNEL_VER), 2.4)
+-$(error Only kernel 2.4/2.6/3.x/4.x is supported but you use $(KERNEL_VER))
++$(error Only kernel 2.4/2.6/3.x/4.x/5.x is supported but you use $(KERNEL_VER))
++endif
+ endif
+ endif
+ endif
