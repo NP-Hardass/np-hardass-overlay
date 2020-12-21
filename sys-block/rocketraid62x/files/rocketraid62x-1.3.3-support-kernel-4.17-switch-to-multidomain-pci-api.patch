@@ -1,0 +1,14 @@
+#+#define HPT_FIND_SLOT_DEVICE(vendor,device) pci_get_domain_bus_and_slot(pci_domain_nr(vendor),vendor,device)
+--- a/osm/linux/osm_linux.h	2019-03-05 02:01:53.241720617 -0500
++++ b/osm/linux/osm_linux.h	2019-03-05 02:01:53.192720605 -0500
+@@ -219,6 +219,8 @@
+ #define HPT_SG_PAGE(sg)		(sg)->page
+ #endif
+ 
+-#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,21)
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(4,17,0)
++#define HPT_FIND_SLOT_DEVICE(vendor,device) pci_get_domain_bus_and_slot(0,vendor,device)
++#elif LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,21)
+ #define HPT_FIND_SLOT_DEVICE pci_get_bus_and_slot
+ #else 
+ #define HPT_FIND_SLOT_DEVICE pci_find_slot
