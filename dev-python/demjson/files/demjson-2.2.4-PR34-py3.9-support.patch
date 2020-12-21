@@ -1,0 +1,29 @@
+From f5009a5f7732d5907825284894406b720e27cc5d Mon Sep 17 00:00:00 2001
+From: Thomas Moschny <thomas.moschny@gmx.de>
+Date: Sun, 23 Feb 2020 23:21:11 +0100
+Subject: [PATCH] Compatibility with Python 3.9.
+
+In Python 3.9+, the ABCs have to be imported from 'collections.abc'
+instead of from 'collections'.
+
+Fixes #33.
+---
+ test/test_demjson.py | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/test/test_demjson.py b/test/test_demjson.py
+index a52e667..94d9f55 100644
+--- a/test/test_demjson.py
++++ b/test/test_demjson.py
+@@ -115,7 +115,10 @@ def rawbytes( byte_list ):
+ except ImportError:
+     # Python 3 has no UserDict. MutableMapping is close, but must
+     # supply own __iter__() and __len__() methods.
+-    dict_mixin = collections.MutableMapping
++    try:
++        dict_mixin = collections.abc.MutableMapping
++    except AttributeError:
++        dict_mixin = collections.MutableMapping
+ 
+ # A class that behaves like a dict, but is not a subclass of dict
+ class LetterOrdDict(dict_mixin):
