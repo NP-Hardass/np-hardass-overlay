@@ -1,0 +1,33 @@
+# Based on https://github.com/gentoo/guru/blob/master/.github/workflows/pkgcheck.yml
+name: pkgcheck
+
+on:
+  schedule:
+    - cron: '0 12 * * *'
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Prepare job
+        run: |
+          LAST_STATUS=$(gh run list -R ${GITHUB_REPOSITORY} \
+            --workflow=pkgcheck.yml \
+            --status=completed \
+            --json=event,conclusion \
+            --jq='first(.[] | select(.event != "pull_request")).conclusion'
+          )
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          ref: master
+      - name: Run pkgcheck
+        uses: pkgcore/pkgcheck-action@v1
+        with:
+          args: --keywords=-RedundantVersion,-NonsolvableDepsInDev
